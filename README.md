@@ -6,7 +6,7 @@ You can use `#inclued "fraction.h"` in youe code so that you can create a fracti
 fration a, b(1,2), c(3,4);
 ```
 and use them like:
-```
+```cpp
 std::cout << a + b;
 c *= b;
 std::cout << c;
