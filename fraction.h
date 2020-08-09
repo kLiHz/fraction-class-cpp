@@ -5,7 +5,12 @@
 #include <string.h>
 #include <cmath>
 #include <stdlib.h>
-using namespace std;
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::istream;
+using std::ostream;
 
 class fraction
 {
