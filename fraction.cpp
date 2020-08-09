@@ -16,6 +16,7 @@ int fraction::lcm(int a, int b)
 	//return a*b/gcd(a,b);
     //if (a % b == 0) return a;
     //if (b % a == 0) return b;
+    if (a == 0 || b == 0) return 0;
     int t_gcd = gcd(a,b);
     if (a % t_gcd == 0) a /= t_gcd;
     else if (b % t_gcd == 0) b /= t_gcd;
