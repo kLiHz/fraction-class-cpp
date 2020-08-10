@@ -25,9 +25,10 @@ int fraction::lcm(int a, int b)
 
 istream& operator>> (istream& is, fraction& f)
 {
-    char input[100];
+    //char input[100];
+    std::string input;
     is >> input;
-    f = fraction(input);
+    f = fraction::construct_from_str(input);
     return is;
 }
 ostream& operator<< (ostream& os, const fraction& f)
@@ -424,4 +425,97 @@ fraction::fraction(const char* str)
         }
         divide(div);
     }
+}
+
+fraction fraction::get_decimal_from_str(const std::string & str, size_t * idx)
+{
+    //只处理一个包含整数小数的字符串，返回一个fraction类
+    static const std::string nums = "0123456789";
+    std::string stra, strb; //新的字符串，存储小数a.b的a, b部分
+    bool if_negative = false;
+
+    std::size_t pos1 = str.find_first_of(nums);       //寻找第一个数字出现的位置
+    if (pos1 == std::string::npos) return 0;          //没有找到任何可能的数字，返回0
+    if (pos1 > 0) if_negative = (str[pos1-1] == '-'); //识别数字前边是否存在负号
+    
+    //寻找之后第一个不是数字的位置/潜在的小数点
+    std::size_t pos2 = str.find_first_not_of(nums, pos1);  
+    if (pos2 != std::string::npos) //若找到
+    {
+        if (pos2 == str.length() - 1) {
+            if (idx != nullptr) *idx = pos2;
+            stra = str.substr(pos1); //若索引位置出现在字符串末尾，则说明不会再有数据
+        }
+        else //位置出现在其他地方
+        {
+            if (str[pos2] != '.')      //索引位置终结于非小数点处，说明数据结束
+            {
+                if (idx != nullptr) *idx = pos2;
+                stra = str.substr(pos1);
+            }
+            else if (str[pos2] == '.') //如果索引位置终结于小数点，说明之后可能还有数
+            {
+                //则继续查找非数字的位置
+                std::size_t pos3 = str.find_first_not_of(nums, pos2+1); 
+                if (pos3 == pos2 + 1) //非数字出现在小数点下一位
+                {
+                    if (idx != nullptr) *idx = pos2;
+                    stra = str.substr(pos1);
+                }
+                else //非数字现于某个位置或未找到(返回值npos)
+                {
+                    //将小数a.b视作a,b两部分
+                    //且能保证b部分存在，字符串非空
+                    stra = str.substr(pos1,pos2-pos1);
+                    if (pos3 == std::string::npos) {
+                        strb = str.substr(pos2+1);
+                    }
+                    else {
+                        if (idx != nullptr) *idx = pos3;
+                        strb = str.substr(pos2+1,pos3-pos2-1);
+                    }
+                }
+            }
+        }
+    }
+    else stra = str.substr(pos1); //未找到，说明都是数字
+    fraction t = 0;
+    //字符串转int整型
+    int a = 0, b = 0;
+    try {a = std::stoi(stra);} catch (...) {a = 0;} //a部分的转换
+    try {b = std::stoi(strb);} catch (...) {b = 0;} //b部分的转换
+    if (if_negative) { a = -a; b = -b;}
+    t += a; 
+    t += fraction(b, pow(10, strb.length()));
+    return t;
+}
+
+fraction fraction::construct_from_str(const std::string & str, size_t * idx)
+{
+    std::size_t sz = 0;
+    fraction m = get_decimal_from_str(str,&sz); //处理分数线之前的部分
+    std::size_t not_blank = str.find_first_not_of(" ",sz);
+    
+    if (not_blank == std::string::npos) //未找到分数线，说明可能仅有一个数
+    {
+        return m;
+    }
+    else if (str[not_blank] == '/' || str[not_blank] == '\\') //存在分数线
+    {
+        std::size_t sz1 = 0;
+        fraction n = get_decimal_from_str(str.substr(not_blank),&sz1);   //处理分数线之后的部分
+        if (idx) *idx = not_blank + sz1;
+        if (n != 0) return m/n;
+        else return m;
+    }
+    else {
+        if (idx) *idx = sz;
+        return m;
+    }
+}
+
+fraction::fraction(const std::string & str)
+{
+    A = 0; B = 1; //init fraction as 0
+    *this = construct_from_str(str);
 }

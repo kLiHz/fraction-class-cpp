@@ -5,6 +5,7 @@
 #include <string.h>
 #include <cmath>
 #include <stdlib.h>
+#include <string>
 
 using std::cin;
 using std::cout;
@@ -75,10 +76,14 @@ public:
     friend istream& operator>> (istream&, fraction&);
     friend ostream& operator<< (ostream&, const fraction&);
 
+    static fraction get_decimal_from_str(const std::string &, size_t * idx = nullptr);
+    static fraction construct_from_str(const std::string &, size_t * idx = nullptr);
+    
     fraction();
     fraction(int );
     fraction(int ,int );
     fraction(const char* );
+    fraction(const std::string &);
 };
 
 #endif
