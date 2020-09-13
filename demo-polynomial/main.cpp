@@ -1,4 +1,5 @@
 #include <iostream>
+//#include "legarcy/mono+poly.h" //poly2.0
 #include "monomial.h"
 #include "polynomial.h"
 using namespace std;

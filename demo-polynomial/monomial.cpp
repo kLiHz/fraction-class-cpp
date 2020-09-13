@@ -1,5 +1,6 @@
 #include "monomial.h"
 using namespace std;
+
 void monomial::multiply(monomial& t)
 {
     //coef.multiply(t.coef);
@@ -96,4 +97,4 @@ monomial::monomial(): coef(0), expo(0) {}
 //monomial::monomial(int a, fraction& b):coef(a), expo(b){}
 
 monomial::monomial(const fraction & a, const fraction & b ): coef(a), expo(b) {}
-monomial::monomial(const string & a, const string & b): coef(a), expo(b) {}
+//monomial::monomial(const string & a, const string & b): coef(a), expo(b) {}

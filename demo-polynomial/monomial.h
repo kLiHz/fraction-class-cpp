@@ -32,7 +32,7 @@ public:
     //monomial(fraction&, int );
     //monomial(int, fraction& );
     monomial(const fraction&, const fraction& );
-    monomial(const std::string &, const std::string &);
+    //monomial(const std::string &, const std::string &);
 };
 
 #endif
