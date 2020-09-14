@@ -32,46 +32,47 @@ public:
     void divide(const fraction& );
     double value() const;
 
-    fraction operator+ (const fraction& );
-    fraction operator- (const fraction& );
-    fraction operator* (const fraction& );
-    fraction operator/ (const fraction& );
+    fraction operator+ (const fraction& ) const;
+    fraction operator- (const fraction& ) const;
+    fraction operator* (const fraction& ) const;
+    fraction operator/ (const fraction& ) const;
 
-    fraction operator+ (int );
-    fraction operator- (int );
-    fraction operator* (int );
-    fraction operator/ (int );
+    fraction operator+ (int ) const;
+    fraction operator- (int ) const;
+    fraction operator- () const;
+    fraction operator* (int ) const;
+    fraction operator/ (int ) const;
 
     friend fraction operator+ (int, const fraction& );
     friend fraction operator- (int, const fraction& );
     friend fraction operator* (int, const fraction& );
     friend fraction operator/ (int, const fraction& );
 
-    void operator+= (const fraction& );
-    void operator-= (const fraction& );
-    void operator*= (const fraction& );
-    void operator/= (const fraction& );
+    fraction & operator+= (const fraction& );
+    fraction & operator-= (const fraction& );
+    fraction & operator*= (const fraction& );
+    fraction & operator/= (const fraction& );
 
-    void operator+= (int );
-    void operator-= (int );
-    void operator*= (int );
-    void operator/= (int );
+    fraction & operator+= (int );
+    fraction & operator-= (int );
+    fraction & operator*= (int );
+    fraction & operator/= (int );
 
-    int compare(const fraction& );
-    bool operator== (const fraction& );
-    bool operator!= (const fraction& );
-    bool operator> (const fraction& );
-    bool operator< (const fraction& );
-    bool operator>= (const fraction& );
-    bool operator<= (const fraction& );
+    int compare(const fraction& ) const;
+    bool operator== (const fraction& ) const;
+    bool operator!= (const fraction& ) const;
+    bool operator>  (const fraction& ) const;
+    bool operator<  (const fraction& ) const;
+    bool operator>= (const fraction& ) const;
+    bool operator<= (const fraction& ) const;
 
-    bool operator== (int);
-    bool operator== (double );
-    bool operator!= (int );
-    bool operator> (int );
-    bool operator< (int );
-    bool operator>= (int );
-    bool operator<= (int );
+    bool operator== (int) const;
+    bool operator== (double) const;
+    bool operator!= (int) const;
+    bool operator>  (int) const;
+    bool operator<  (int) const;
+    bool operator>= (int) const;
+    bool operator<= (int) const;
 
     friend istream& operator>> (istream&, fraction&);
     friend ostream& operator<< (ostream&, const fraction&);

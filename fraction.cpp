@@ -138,53 +138,57 @@ double fraction::value() const
     return (double) A / B;
 }
 
-fraction fraction::operator+ (const fraction& addend)
+fraction fraction::operator+ (const fraction& addend) const
 {
     fraction t(A,B);
     t.add(addend);
     return t;
 }
-fraction fraction::operator- (const fraction& subtrahend)
+fraction fraction::operator- (const fraction& subtrahend) const
 {
     fraction t(A,B);
     t.subtract(subtrahend);
     return t;
 }
-fraction fraction::operator* (const fraction& multiplier)
+fraction fraction::operator* (const fraction& multiplier) const
 {
     fraction t(A,B);
     t.multiply(multiplier);
     return t;
 }
-fraction fraction::operator/ (const fraction& divisor)
+fraction fraction::operator/ (const fraction& divisor) const
 {
     fraction t(A,B);
     t.divide(divisor);
     return t;
 }
 
-fraction fraction::operator+ (int num )
+fraction fraction::operator+ (int num ) const
 {
     fraction addend(num);
     fraction t(A,B);
     t.add(addend);
     return t;
 }
-fraction fraction::operator- (int num )
+fraction fraction::operator- (int num ) const
 {
     fraction subtrahend(num);
     fraction t(A,B);
     t.subtract(subtrahend);
     return t;
 }
-fraction fraction::operator* (int num )
+fraction fraction::operator- () const
+{
+    return fraction(-A,B);
+}
+fraction fraction::operator* (int num ) const
 {
     fraction multiplier(num);
     fraction t(A,B);
     t.multiply(multiplier);
     return t;
 }
-fraction fraction::operator/ (int num )
+fraction fraction::operator/ (int num ) const
 {
     fraction divisor(num);
     fraction t(A,B);
@@ -217,45 +221,53 @@ fraction operator/ (int num, const fraction& t)
     return p;
 }
 
-void fraction::operator+= (const fraction& addend)
+fraction & fraction::operator+= (const fraction& addend)
 {
     add(addend);
+    return *this;
 }
-void fraction::operator-= (const fraction& subtrahend)
+fraction & fraction::operator-= (const fraction& subtrahend)
 {
     subtract(subtrahend);
+    return *this;
 }
-void fraction::operator*= (const fraction& multiplier)
+fraction & fraction::operator*= (const fraction& multiplier)
 {
     multiply(multiplier);
+    return *this;
 }
-void fraction::operator/= (const fraction& divisor)
+fraction & fraction::operator/= (const fraction& divisor)
 {
     divide(divisor);
+    return *this;
 }
 
-void fraction::operator+= (int num)
+fraction & fraction::operator+= (int num)
 {
     fraction t(num);
     add(t);
+    return *this;
 }
-void fraction::operator-= (int num)
+fraction & fraction::operator-= (int num)
 {
     fraction t(num);
     subtract(t);
+    return *this;
 }
-void fraction::operator*= (int num)
+fraction & fraction::operator*= (int num)
 {
     fraction t(num);
     multiply(t);
+    return *this;
 }
-void fraction::operator/= (int num)
+fraction & fraction::operator/= (int num)
 {
     fraction t(num);
     divide(t);
+    return *this;
 }
 
-int fraction::compare(const fraction& t)
+int fraction::compare(const fraction& t) const
 {
     /*
     fraction a(A,B), b;
@@ -286,60 +298,62 @@ int fraction::compare(const fraction& t)
     else if (A * t.B == t.A * B) return 0;
     else return 1;
 }
-bool fraction::operator== (const fraction& t)
+bool fraction::operator== (const fraction& t) const
 {
     return A * t.B == t.A * B;
     //return (A == t.A && B == t.B);
 }
-bool fraction::operator== (int t)
-{
-    return A == t * B;
-}
-bool fraction::operator!= (const fraction& t)
+
+bool fraction::operator!= (const fraction& t) const
 {
     return A * t.B != t.A * B;
 }
-bool fraction::operator> (const fraction& t)
+bool fraction::operator> (const fraction& t) const
 {
     if (compare(t) == 1) return true;
     else return false;
 }
-bool fraction::operator< (const fraction& t)
+bool fraction::operator< (const fraction& t) const
 {
     if (compare(t) == -1) return true;
     else return false;
 }
-bool fraction::operator>= (const fraction& t)
+bool fraction::operator>= (const fraction& t) const
 {
     if(compare(t) != -1) return true;
     else return false;
 }
-bool fraction::operator<= (const fraction& t)
+bool fraction::operator<= (const fraction& t) const
 {
     if(compare(t) != 1) return true;
     else return false;
 }
-bool fraction::operator== (double t)
+bool fraction::operator== (double t) const
 {
     return value() == t;
 }
-bool fraction::operator!= (int num)
+
+bool fraction::operator== (int t) const
+{
+    return A == t * B;
+}
+bool fraction::operator!= (int num) const
 {
     return A != num * B;
 }
-bool fraction::operator> (int num)
+bool fraction::operator> (int num) const
 {
     return A > num * B;
 }
-bool fraction::operator< (int num)
+bool fraction::operator< (int num) const
 {
     return A < num * B;
 }
-bool fraction::operator>= (int num)
+bool fraction::operator>= (int num) const
 {
     return A >= num * B;
 }
-bool fraction::operator<= (int num)
+bool fraction::operator<= (int num) const
 {
     return A <= num * B;
 }
