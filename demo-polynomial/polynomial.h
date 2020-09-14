@@ -9,27 +9,27 @@
 
 class polynomial
 {
-    std::list<monomial> data;
+    std::list<monomial> data; //terms are stored from smaller expo to bigger expo
 public:
-    void push(monomial& );
-    void modify(monomial& );
-    void add(polynomial& );
-    void subtract(polynomial& );
-    void add(monomial& );
-    void subtract(monomial& );
-    void multiply(monomial& );
-    void multiply(polynomial& );
+    void push(const monomial &);
+    void modify_term_as(const monomial &);
+    void add(/*const*/ polynomial &);
+    void add(const monomial &);
+    void subtract(/*const*/ polynomial &);
+    void subtract(const monomial &);
+    void multiply(const monomial &);
+    void multiply(/*const*/ polynomial &);
     void derivate();
 
-    void copy(polynomial& );
+    void copy(const polynomial &);
     void clear();
     double value(double );
 
     void print();
-    void operator= (polynomial& );
+    void operator= (const polynomial &);
 
     polynomial();
-    polynomial(polynomial& );
+    polynomial(const polynomial &);
     ~polynomial();
 };
 

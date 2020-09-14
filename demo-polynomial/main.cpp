@@ -28,46 +28,19 @@ polynomial poly_a, poly_b;
 polynomial* now_opreate = &poly_a;
 char now_opr = 'A';
 
-void trim(char* strIn, char* strOut) // support in-place opreation
-{
-    char* a = strIn, * b;
-    while (*a == ' ' || *a == '\n' || *a == '\t') a++; // ignore spaces at the beginning
-    b = strIn + strlen(strIn) - 1; // get pointer pointing at the end of the line
-    while (*b == ' ' || *b == '\n' || *a == '\t') b--; // ignore spaces at the end
-    while (a <= b) *strOut++ = *a++; // transplace
-    *strOut = '\0';
-}
-
-int Getline(char* dstStr)
-{
-    char c;
-    int k = 0;
-    scanf("%c", &c);
-    while (c != '\n')
-    {
-        *dstStr++ = c;
-        k++;
-        scanf("%c", &c);
-    }
-    *dstStr = '\0';
-    return k;
-}
-
 void guide(char choice)
 {
-    char usr_input[100];
+    std::string usr_input;
     fraction t_coef = 0;
     fraction t_expo = 0;
     double x;
-    monomial t_mono;
     polynomial tmp(poly_a);
 
     switch (choice)
     {
     case 's':
         cout << "Choose which poly. to operate on (A/B) > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
+        getline(cin,usr_input);
         if (usr_input[0] == 'A' || usr_input[0] == 'a')
         {
             now_opreate = &poly_a;
@@ -85,17 +58,14 @@ void guide(char choice)
 
     case 'l':
         cout << "系数 > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
+        getline(cin,usr_input);
         t_coef = fraction(usr_input);
 
         cout << "指数 > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
+        getline(cin,usr_input);
         t_expo = fraction(usr_input);
 
-        t_mono = monomial(t_coef, t_expo);
-        now_opreate->modify(t_mono);
+        now_opreate->modify_term_as(monomial(t_coef, t_expo));
         cout << "Poly now becomes: ";
         now_opreate->print();
         cout << endl;
@@ -103,17 +73,14 @@ void guide(char choice)
 
     case 't':
         cout << "系数 > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
+        getline(cin,usr_input);
         t_coef = fraction(usr_input);
 
         cout << "指数 > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
+        getline(cin,usr_input);
         t_expo = fraction(usr_input);
 
-        t_mono = monomial(t_coef, t_expo);
-        now_opreate->push(t_mono);
+        now_opreate->push(monomial(t_coef, t_expo));
         cout << "Poly now becomes: ";
         now_opreate->print();
         cout << endl;
@@ -146,9 +113,8 @@ void guide(char choice)
 
     case 'e':
         cout << "Enter the value of x: > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
-        x = atof(usr_input);
+        getline(cin,usr_input);
+        x = stoi(usr_input);
         cout << "Value: " << now_opreate->value(x) << endl;
         break;
 
@@ -193,14 +159,13 @@ void guide(char choice)
 }
 int main()
 {
-    char choice[100];
-    choice[0] = 'h';
+    std::string choice = "h";
+    //choice[0] = 'h';
     while (choice[0] != 'q')
     {
         guide(choice[0]);
         cout << "> ";
-        Getline(choice);
-        trim(choice, choice);
+        getline(cin,choice);
     }
     return 0;
 }

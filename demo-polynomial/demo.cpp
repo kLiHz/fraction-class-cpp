@@ -27,6 +27,7 @@ int main()
     cout << "m2: "; m2.print(); cout << endl;
 
     t1.push(m1);
+    t1.print(); cout << endl;
     t1.push(m2);
     t1.print(); cout << endl;
 

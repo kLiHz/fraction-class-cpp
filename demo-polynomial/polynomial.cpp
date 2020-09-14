@@ -1,44 +1,58 @@
 #include "polynomial.h"
 using namespace std;
 
-void polynomial::push(monomial& n) //add_to_coef
+void polynomial::push(const monomial& n) //add_to_coef
 {
+    bool has_insert = false;
     std::list<monomial>::iterator it;
-    bool found_similar_item = false;
     for (it = data.begin(); it != data.end(); ++it)
     {
-        if (*it == n) 
+        if (n == *it) //equal expo term found
         {
-            found_similar_item = true;
             *it += n;
+            has_insert = true;
             break;
         }
+        else if (n < *it) //now expo is bigger
+        {
+            data.insert(it,n);
+            has_insert = true;
+            break;
+        }
+        else continue;
     }
-    if (!found_similar_item)
+    if (!has_insert)
     {
         data.push_back(n);
-        data.sort();
     }
+    return;
 }
 
-void polynomial::modify(monomial& n)
+void polynomial::modify_term_as(const monomial& n)
 {
+    bool has_insert = false;
     std::list<monomial>::iterator it;
-    bool found_similar_item = false;
     for (it = data.begin(); it != data.end(); ++it)
     {
         if (*it == n) 
         {
-            found_similar_item = true;
             *it = n;
+            has_insert = true;
             break;
         }
+        else if (n < *it)
+        {
+            data.insert(it,n);
+            has_insert = true;
+            break;
+        }
+        else continue;
     }
-    if (!found_similar_item)
+    if (!has_insert)
     {
         data.push_back(n);
-        data.sort();
     }
+    return;
 }
 void polynomial::add(polynomial& n)
 {
@@ -48,7 +62,7 @@ void polynomial::add(polynomial& n)
         push(*it);
     }
 }
-void polynomial::add(monomial& n)
+void polynomial::add(const monomial& n)
 {
     push(n);
 }
@@ -57,24 +71,20 @@ void polynomial::subtract(polynomial& n)
     std::list<monomial>::iterator it;
     for (it = n.data.begin(); it != n.data.end(); ++it)
     {
-        monomial t = *it;
-        t.coef = 0 - t.coef;
-        push(t);
+        push(-(*it)); // or add(-(*it));
     }
 }
-void polynomial::subtract(monomial& n)
+void polynomial::subtract(const monomial& n)
 {
-    monomial t(n);
-    t.coef = 0 - t.coef;
-    push(t);
+    push(-n);
 }
 
-void polynomial::copy(polynomial & n)
+void polynomial::copy(const polynomial & n)
 {
     data = n.data;
 }
 
-void polynomial::operator=(polynomial& n)
+void polynomial::operator=(const polynomial& n)
 {
     data = n.data;
 }
@@ -94,7 +104,7 @@ void polynomial::multiply(polynomial & n)
     data = tmp;
 }
 
-void polynomial::multiply(monomial & n)
+void polynomial::multiply(const monomial & n)
 {
     std::list<monomial>::iterator it;
     for (it = data.begin(); it != data.end(); ++it)
@@ -109,18 +119,17 @@ void polynomial::derivate()
     for (it = data.begin(); it != data.end(); ++it)
     {
         it->coef *= it->expo;
-        it->expo -=1; 
+        it->expo -= 1; 
     }
 }
 
 void polynomial::print()
 {
     bool flag = false;
-    std::list<monomial>::iterator it;
-    for (it = data.end(); it != data.begin(); --it)
+    for (std::list<monomial>::reverse_iterator rit = data.rbegin(); rit!=data.rend(); ++rit)
     {
-        if (flag && it->coef.value() > 0) cout << " + ";
-        it->print();
+        if (flag && rit->coef > 0) cout << " + ";
+        rit->print();
         flag = true;
     }
 }
@@ -142,7 +151,7 @@ double polynomial::value(double x)
 }
 
 polynomial::polynomial(){}
-polynomial::polynomial(polynomial & n)
+polynomial::polynomial(const polynomial & n)
 {
     copy(n);
 }

@@ -13,19 +13,22 @@ public:
     fraction expo;
     void print();
 
-    void multiply(monomial &);
-    void divide(monomial &);
+    void multiply(const monomial &);
+    void divide(const monomial &);
     double value(double );
 
-    monomial operator*(monomial &);
-    monomial & operator*=(monomial &);
-    monomial operator+(monomial &);
-    monomial & operator+=(monomial &);
-    monomial operator-(monomial &);
-    monomial & operator-=(monomial &);
+    monomial operator+(const monomial &) const;
+    monomial operator-(const monomial &) const;
+    monomial operator*(const monomial &) const;
+    monomial operator-() const;
+    monomial & operator+=(const monomial &);
+    monomial & operator*=(const monomial &);
+    monomial & operator-=(const monomial &);
     
-    bool operator<(monomial &); //compare by exponent
-    bool operator==(monomial &); //compare by exponent
+    bool operator<(const monomial &) const; //compare by exponent
+    bool operator>(const monomial &) const;
+    bool operator==(const monomial &) const; //compare by exponent
+    bool operator!=(const monomial &) const;
     
     monomial();
     //monomial(int, int);
