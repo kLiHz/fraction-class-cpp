@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <cmath>
-#include <string.h> 
+#include <string>
 #include <stdlib.h>
 using namespace std;
 //poly 1.0 
@@ -22,7 +22,6 @@ public:
     void str_set(char*);
 
     void print();
-    void output_term(int );
     void output_term(double , int );
     void set_to(const Polynomial&);
     void clear();
@@ -35,6 +34,7 @@ void Polynomial::assign_coef(double coef, int expo) //重新指定系数
 {
     if (expo < 0) {
         cout << "# The exponent needs to be a natural number!\n";
+        //cout << "指数需为自然数!\n";
         cout << "# Failed to assign one term as: '";
         output_term(coef, expo);
         cout << "'. \n";
@@ -42,6 +42,7 @@ void Polynomial::assign_coef(double coef, int expo) //重新指定系数
     }
     if (expo > 29) {
         cout << "# The exponent is too big!\n";
+        //cout << "指数过大, 溢出!\n";
         cout << "# Failed to assign one term as: '";
         output_term(coef, expo);
         cout << "'. \n";
@@ -49,16 +50,7 @@ void Polynomial::assign_coef(double coef, int expo) //重新指定系数
     }
     coefs[expo] = coef;
 }
-void Polynomial::output_term(int expo)
-{
-    if (coefs[expo] == 0) return;
 
-    if (coefs[expo] < 0)  cout << " - ";
-    if (coefs[expo] != 1 && coefs[expo] != -1) cout << abs(coefs[expo]);
-
-    if (expo == 1) cout << "x";
-    else cout << "x^" << expo;
-}
 void Polynomial::output_term(double coef, int expo)
 {
     if (coef == 0) return;
@@ -67,12 +59,14 @@ void Polynomial::output_term(double coef, int expo)
     if (coef != 1 && coef != -1) cout << abs(coef);
 
     if (expo == 1) cout << "x";
+    else if (expo == 0) {}
     else cout << "x^" << expo;
 }
 void Polynomial::add_to_coef(double coef, int expo) //给某一项系数加上一定的值
 {
     if (expo < 0) {
         cout << "# The exponent needs to be a natural number!\n";
+        //cout << "指数需为自然数!\n";
         cout << "# Failed to add term: '";
         output_term(coef, expo);
         cout << "'. \n";
@@ -80,6 +74,7 @@ void Polynomial::add_to_coef(double coef, int expo) //给某一项系数加上�
     }
     if (expo > 29) {
         cout << "# The exponent is too big!\n";
+        //cout << "指数过大, 溢出!\n";
         cout << "# Failed to add term: '";
         output_term(coef, expo);
         cout << "'. \n";
@@ -115,6 +110,8 @@ int Polynomial::multiply(Polynomial& n)
             {
                 cout << "# Excessive exponent encountered! \n";
                 cout << "# Try a polynomial with smaller exponents. \n";
+                //cout << "运算时指数溢出! \n";
+                //cout << "请尝试包含项的次数较小的多项式. \n";
                 return 0;
             }
             temp.add_to_coef(coefs[i] * n.coefs[j], i + j);
@@ -188,40 +185,15 @@ void Polynomial::str_set(char* p)
 }
 void Polynomial::print()
 {
-    int i = 29;
     bool flag = 0; //记录是否至少输出了一项
 
-    while (coefs[i] == 0 && i > 0) i--;
-
-    if (i != 0) //单独输出最高次项
-    {
-        if (coefs[i] < 0) cout << " - ";
-        if (coefs[i] != 1 && coefs[i] != -1) cout << abs(coefs[i]);
-
-        if (i == 1) cout << "x";
-        else cout << "x^" << i;
-        flag = 1;
-        i--;
-    }
-
-    for (; i > 0; i--)
+    for (int i = 29; i >= 0; i--)
     {
         if (coefs[i] == 0) continue;
+        if (flag && coefs[i] > 0) cout << " + ";
+        output_term(coefs[i],i);
         flag = 1;
-
-        if (coefs[i] > 0) cout << " + ";
-        else cout << " - ";
-        if (coefs[i] != 1 && coefs[i] != -1) cout << abs(coefs[i]);
-
-        if (i == 1) cout << "x";
-        else cout << "x^" << i;
     }
-
-    if (coefs[0] == 0) return;
-    if (flag == 1 && coefs[0] > 0) cout << " + ";
-    if (coefs[0] < 0) cout << " - ";
-    cout << abs(coefs[0]);
-
     //cout << endl;
     return;
 }
@@ -262,75 +234,44 @@ void command_promption()
     cout << "------------------------------------------ \n";
 }
 
-Polynomial poly_a, poly_b;
-Polynomial* now_opreate = &poly_a;
-char now_opr = 'A';
-
-void trim(char* strIn, char* strOut) // support in-place opreation
-{
-    char* a = strIn, * b;
-    while (*a == ' ' || *a == '\n' || *a == '\t') a++; // ignore spaces at the beginning
-    b = strIn + strlen(strIn) - 1; // get pointer pointing at the end of the line
-    while (*b == ' ' || *b == '\n' || *a == '\t') b--; // ignore spaces at the end
-    while (a <= b) *strOut++ = *a++; // transplace
-    *strOut = '\0';
-}
-
-int Getline(char* dstStr)
-{
-    char c;
-    int k = 0;
-    scanf("%c", &c);
-    while (c != '\n')
-    {
-        *dstStr++ = c;
-        k++;
-        scanf("%c", &c);
-    }
-    *dstStr = '\0';
-    return k;
-}
+Polynomial polys[3];
+Polynomial* now_opreate = &polys[0];
 
 void guide(char choice)
 {
-    char usr_input[100];
+    string usr_input;
     double t_coef = 0;
     int t_expo = 0;
     double x;
-    Polynomial tmp(poly_a);
+    Polynomial tmp(polys[0]);
     bool m_flag;
 
     switch (choice)
     {
     case 's':
-        cout << "Choose which poly. to operate on (A/B) > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
-        if (usr_input[0] == 'A' || usr_input[0] == 'a')
+        cout << "Choose which poly. to operate on (A, B or C) > ";
+        getline(cin, usr_input);
+        if (usr_input[0] >= 'a' && usr_input[0] <= 'c')
         {
-            now_opreate = &poly_a;
-            cout << "Polynomial A is now chosen!\n";
-            now_opr = 'A';
+            now_opreate = & polys[usr_input[0]-'a'];
+            cout << "Polynomial " << char('A' + (now_opreate - polys)) << " is now chosen!\n";
         }
-        else if (usr_input[0] == 'B' || usr_input[0] == 'b')
+        else if (usr_input[0] >= 'A' && usr_input[0] <= 'C')
         {
-            now_opreate = &poly_b;
-            cout << "Polynomial B is now chosen!\n";
-            now_opr = 'B';
+            now_opreate = & polys[usr_input[0]-'A'];
+            cout << "Polynomial " << char('A' + (now_opreate - polys)) << " is now chosen!\n";
         }
-        else cout << "Polynomial under opreation is " << now_opr << ".\n";
+        else cout << "Polynomial under opreation is " << char('A' + (now_opreate - polys))  << ".\n";
         break;
 
     case 'l':
-        cout << "Input the coef. > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
-        t_coef = atof(usr_input);
+        cout << "Input the coef > ";
+        getline(cin, usr_input);
+        t_coef = stod(usr_input);
 
-        cout << "Input the expo. > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
-        t_expo = atoi(usr_input);
+        cout << "Input the expo > ";
+        getline(cin, usr_input);
+        t_expo = stod(usr_input);
 
         now_opreate->assign_coef(t_coef, t_expo);
         cout << "Poly now becomes: ";
@@ -339,15 +280,13 @@ void guide(char choice)
         break;
 
     case 't':
-        cout << "Input the coef. > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
-        t_coef = atof(usr_input);
+        cout << "Input the coef > ";
+        getline(cin, usr_input);
+        t_coef = stod(usr_input);
 
-        cout << "Input the expo. > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
-        t_expo = atoi(usr_input);
+        cout << "Input the expo > ";
+        getline(cin, usr_input);
+        t_expo = stod(usr_input);
 
         now_opreate->add_to_coef(t_coef, t_expo);
         cout << "Poly now becomes: ";
@@ -355,19 +294,9 @@ void guide(char choice)
         cout << endl;
         break;
 
-    case 'i':
-        cout << "> ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
-        now_opreate->clear();
-        now_opreate->str_set(usr_input);
-        now_opreate->print();
-        cout << endl;
-        break;
-
     case 'c':
         now_opreate->clear();
-        cout << "Poly_" << now_opr << " has been cleared!" << endl;
+        cout << "Poly: " << char('A' + (now_opreate - polys))  << " has been cleared!" << endl;
         break;
 
     case 'v':
@@ -376,44 +305,42 @@ void guide(char choice)
         break;
 
     case 'a':
-        cout << "Poly_A: "; poly_a.print(); cout << endl;
-        cout << "Poly_B: "; poly_b.print(); cout << endl;
+        cout << "A: "; polys[0].print(); cout << endl;
+        cout << "B: "; polys[1].print(); cout << endl;
+        cout << "C: "; polys[2].print(); cout << endl;
         break;
 
     case 'e':
-        cout << "Enter the value of x: > ";
-        Getline(usr_input);
-        trim(usr_input, usr_input);
-        x = atof(usr_input);
+        cout << "Enter the value of x > ";
+        getline(cin, usr_input);
+        x = stod(usr_input);
         cout << "Value: " << now_opreate->value(x) << endl;
         break;
 
     case 'd':
-        if (now_opr == 'A') {
-            tmp.set_to(poly_a);
-        }
-        if (now_opr == 'B') {
-            tmp.set_to(poly_b);
-        }
+        tmp.set_to(*now_opreate);
         tmp.derivate();
         tmp.print();
         cout << endl;
         break;
 
     case '+':
-        tmp.add(poly_b);
+        tmp.set_to(polys[0]);
+        tmp.add(polys[1]);
         tmp.print();
         cout << endl;
         break;
 
     case '-':
-        tmp.substract(poly_b);
+        tmp.set_to(polys[0]);
+        tmp.substract(polys[1]);
         tmp.print();
         cout << endl;
         break;
 
     case '*':
-        m_flag = tmp.multiply(poly_b);
+        tmp.set_to(polys[0]);
+        m_flag = tmp.multiply(polys[1]);
         if (m_flag) tmp.print();
         cout << endl;
         break;
@@ -421,7 +348,11 @@ void guide(char choice)
     case 'q':
         break;
 
-    case 'h': default:
+    case 'h': 
+        command_promption();
+        break;
+    default:
+        cout<<"Invalid command!\n";
         command_promption();
         break;
     }
@@ -429,15 +360,12 @@ void guide(char choice)
 }
 int main()
 {
-    char choice[100];
-    choice[0] = 'h';
+    string choice = "h";
     while (choice[0] != 'q')
     {
         guide(choice[0]);
         cout << "> ";
-        Getline(choice);
-        trim(choice, choice);
+        getline(cin, choice);
     }
     return 0;
 }
-
