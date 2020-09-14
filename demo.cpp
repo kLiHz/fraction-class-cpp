@@ -34,3 +34,21 @@ int main()
     
     return 0;
 }
+
+/*int main()
+{
+    fraction a(1, 3), b(1, 3), c(1, 3), d(1, 3);
+    fraction t(1, 2);
+    a.add(t);
+    a.print();
+    cout << endl;
+    b.subtract(t);
+    b.print();
+    cout << endl;
+    c.multiply(t);
+    c.print();
+    cout << endl;
+    d.divide(t);
+    d.print();
+    cout << endl;
+}*/
