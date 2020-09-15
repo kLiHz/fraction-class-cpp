@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 //#include "legarcy/mono+poly.h" //poly2.0
 #include "monomial.h"
 #include "polynomial.h"
@@ -30,9 +31,14 @@ char now_opr = 'A';
 
 void guide(char choice)
 {
-    std::string usr_input;
+    std::string usr_input, s_coef, s_expo;
+#ifdef _FRACTION_H_
     fraction t_coef = 0;
     fraction t_expo = 0;
+#else
+    double t_coef = 0;
+    double t_expo = 0;
+#endif
     double x;
     polynomial tmp(poly_a);
 
@@ -58,13 +64,17 @@ void guide(char choice)
 
     case 'l':
         cout << "系数 > ";
-        getline(cin,usr_input);
-        t_coef = fraction(usr_input);
-
+        getline(cin, s_coef);
         cout << "指数 > ";
-        getline(cin,usr_input);
-        t_expo = fraction(usr_input);
+        getline(cin, s_expo);
 
+#ifdef _FRACTION_H_
+        t_coef = fraction(s_coef);
+        t_expo = fraction(s_expo);
+#else
+        t_coef = stod(s_coef);
+        t_expo = stod(s_expo);
+#endif
         now_opreate->modify_term_as(monomial(t_coef, t_expo));
         cout << "Poly now becomes: ";
         now_opreate->print();
@@ -73,13 +83,17 @@ void guide(char choice)
 
     case 't':
         cout << "系数 > ";
-        getline(cin,usr_input);
-        t_coef = fraction(usr_input);
-
+        getline(cin, s_coef);
         cout << "指数 > ";
-        getline(cin,usr_input);
-        t_expo = fraction(usr_input);
+        getline(cin, s_expo);
 
+#ifdef _FRACTION_H_
+        t_coef = fraction(s_coef);
+        t_expo = fraction(s_expo);
+#else
+        t_coef = stod(s_coef);
+        t_expo = stod(s_expo);
+#endif
         now_opreate->push(monomial(t_coef, t_expo));
         cout << "Poly now becomes: ";
         now_opreate->print();

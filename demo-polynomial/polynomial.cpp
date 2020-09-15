@@ -145,7 +145,7 @@ double polynomial::value(double x)
     std::list<monomial>::iterator it;
     for (it = data.begin(); it != data.end(); ++it)
     {
-        t += it->coef.value() * pow(x, it->expo.value());
+        t += it->value(x);
     }
     return t;
 }

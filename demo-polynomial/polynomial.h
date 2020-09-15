@@ -4,7 +4,6 @@
 #include <iostream>
 #include <cmath>
 #include <list>
-#include "../fraction.h"
 #include "monomial.h"
 
 class polynomial

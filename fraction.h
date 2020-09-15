@@ -74,6 +74,8 @@ public:
     bool operator>= (int) const;
     bool operator<= (int) const;
 
+    operator double() const;
+    
     friend istream& operator>> (istream&, fraction&);
     friend ostream& operator<< (ostream&, const fraction&);
 

@@ -3,21 +3,17 @@ using namespace std;
 
 void monomial::multiply(const monomial& t)
 {
-    //coef.multiply(t.coef);
-    //expo.add(t.expo);
     coef *= t.coef;
     expo += t.expo;
 }
 void monomial::divide(const monomial& t)
 {
-    //coef.divide(t.coef);
-    //expo.subtract(t.expo);
     coef /= t.coef;
     expo -= t.expo;
 }
 double monomial::value(double x)
 {
-    return coef.value()*pow(x,expo.value());
+    return double(coef) * pow(x, expo);
 }
 monomial monomial::operator*(const monomial& t) const
 {
@@ -56,23 +52,26 @@ monomial & monomial::operator-=(const monomial & t)
 void monomial::print()
 {
     if (coef == 0) return;
-    if (expo.value() == 0) 
+    if (expo == 0) 
     {
         //coef.print();
         cout << coef;
         return;
     }
-    if (abs(coef.value()) == 1)
+    if (abs(coef) == 1)
     {
-        if (coef.value() < 0) cout << " - ";
+        if (coef < 0) cout << " - ";
     }
     //else coef.print();
     else cout << coef;
-    cout<<' '<<'x';
-    if (expo.value() != 1)
+    cout << ' ' << 'x';
+    if (expo != 1)
     {
-        cout<<"^";
-        if (!expo.if_int() || expo < 0)
+        cout << "^";
+#ifdef _FRACTION_H_
+        if (!expo.if_int())
+#endif
+        if (expo < 0)
         {
             cout << "(";
             //expo.print(); 
@@ -106,9 +105,14 @@ bool monomial::operator!=(const monomial & t) const
 
 monomial::monomial(): coef(0), expo(0) {}
 
+#ifdef _FRACTION_H_
+monomial::monomial(const fraction & a, const fraction & b ): coef(a), expo(b) {}
+#else
+monomial::monomial(double a, double b) : coef(a), expo(b) {}
+#endif
+
 //monomial::monomial(int a, int b): coef(a), expo(b){}
 //monomial::monomial(fraction& a, int b):coef(a), expo(b){}
 //monomial::monomial(int a, fraction& b):coef(a), expo(b){}
 
-monomial::monomial(const fraction & a, const fraction & b ): coef(a), expo(b) {}
 //monomial::monomial(const string & a, const string & b): coef(a), expo(b) {}
