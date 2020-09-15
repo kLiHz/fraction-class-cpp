@@ -14,3 +14,7 @@ Now there are 3 versions of this program.
 
 Since the 2nd and 3rd versions' difference are about data structure and they share the same controlling interface, so you can change the file included in `main.cpp` to shift between these two version. (Currently, as for `Poly3`, you need to link three object file together, but there is no need to do this for `Poly2`)
 
+## When not in the mood of using fraction class...
+
+If so, just remove `#include "fraction.h"` in `main.cpp` so that the program will use `double` instead of `fraction`.
+

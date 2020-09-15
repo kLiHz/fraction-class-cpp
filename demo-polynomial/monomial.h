@@ -9,13 +9,20 @@
 class monomial
 {
 public:
+#ifdef _FRACTION_H_
     fraction coef;
     fraction expo;
+    monomial(const fraction &, const fraction &);
+#else
+    double coef;
+    double expo;
+    monomial(double, double);
+#endif
     void print();
 
     void multiply(const monomial &);
     void divide(const monomial &);
-    double value(double );
+    double value(double);
 
     monomial operator+(const monomial &) const;
     monomial operator-(const monomial &) const;
@@ -34,7 +41,6 @@ public:
     //monomial(int, int);
     //monomial(fraction&, int );
     //monomial(int, fraction& );
-    monomial(const fraction&, const fraction& );
     //monomial(const std::string &, const std::string &);
 };
 

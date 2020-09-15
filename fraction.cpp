@@ -40,6 +40,12 @@ ostream& operator<< (ostream& os, const fraction& f)
     else os << tA << "/" << f.B;
     return os;
 }
+
+fraction::operator double() const
+{
+    return value();
+}
+
 void fraction::add(const fraction& addend)
 {
     if (B == addend.B) {
