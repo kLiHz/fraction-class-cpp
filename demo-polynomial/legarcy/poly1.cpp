@@ -127,12 +127,13 @@ void Polynomial::derivate()
         coefs[i - 1] = coefs[i] * i;
     }
 }
-long double Polynomial::value(double x)
+long double Polynomial::value(double x) //Qinjiushao
 {
     long double value = 0;
-    for (int i = 0; i < 30; i++)
+    for (int i = 30; i > 0; --i)
     {
-        value += coefs[i] * pow(x, i);
+        value *= x;
+        value += coefs[i-1];
     }
     return value;
 }
