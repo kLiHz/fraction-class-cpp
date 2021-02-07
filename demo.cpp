@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "fraction.h"
 
 using std::cin;
@@ -15,23 +16,16 @@ int main()
     cin >> n;
     cout << "The product of m and n is: " << m * n << endl;
 
-    fraction a,b,c,d,e,f;
+    std::vector<fraction> fracs;
     std::string str = "1 / 2  3.4a.s.3.3 / 9.9  55/66  4.5/9 3";
-    cout << "Extract 6 fractions from string: " << str << endl;
+    cout << "Extract 6 fractions from: \"" << str << "\" \n";
     std::size_t sz;
-    a = fraction::construct_from_str(str, &sz);
-    str = str.substr(sz);
-    b = fraction::construct_from_str(str, &sz);
-    str = str.substr(sz);
-    c = fraction::construct_from_str(str, &sz);
-    str = str.substr(sz);
-    d = fraction::construct_from_str(str, &sz);
-    str = str.substr(sz);
-    e = fraction::construct_from_str(str, &sz);
-    str = str.substr(sz);
-    f = fraction::construct_from_str(str, &sz);
-    cout << a << ' ' << b << ' ' << c << ' ' << d << ' ' << e << ' ' << f << endl;
-    
+    for (int i = 0; i < 6; ++i) {
+        fracs.push_back( fraction::construct_from_str(str, &sz) );
+        str = str.substr(sz);
+    }
+    for (auto frac : fracs) cout << frac << ' ';
+    std::cout << std::endl;
     return 0;
 }
 
