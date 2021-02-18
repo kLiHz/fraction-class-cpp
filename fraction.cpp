@@ -1,16 +1,14 @@
 #include "fraction.h"
 
-int fraction::gcd(int x,int y)
+int fraction::gcd(int x, int y) 
 {
-	int t;
-	while (y!=0)
-	{
-		t=x%y;
-		x=y;
-		y=t;
-	}
-	return x;
+    do {
+        x %= y;
+        std::swap(x, y);
+    } while (y);
+    return x;
 }
+
 int fraction::lcm(int a, int b)
 {
 	//return a*b/gcd(a,b);
@@ -31,14 +29,24 @@ istream& operator>> (istream& is, fraction& f)
     f = fraction::construct_from_str(input);
     return is;
 }
+
 ostream& operator<< (ostream& os, const fraction& f)
 {
-    int tA = abs(f.A);
-    if (f.A < 0) os << " - ";
-    if (tA >= f.B && tA % f.B == 0) os << (tA / f.B);
-    else if (tA == 0) os << 0;
-    else os << tA << "/" << f.B;
+    os << to_string(f);
     return os;
+}
+
+std::string to_string(const fraction & f) {
+    std::string str;
+    if ( f < 0 ) str += "-";
+    if ( f.is_int() ) {
+        str += std::to_string( int(abs(f.A) / f.B) );
+    } else {
+        str += std::to_string( f.A );
+        str += "/";
+        str += std::to_string( f.B );
+    }
+    return str;
 }
 
 fraction::operator double() const
@@ -133,12 +141,13 @@ void fraction::print()
     else if (tA == 0) cout<<0;
     else cout << tA << "/" << B;
 }
-bool fraction::if_int() const
+
+bool fraction::is_int() const
 {
-    int tA = abs(A);
-    if ((tA >= B && tA % B == 0)|| tA == 0) return true;
-    else return false;
+    auto _A = abs(A);
+    return _A == 0 || (_A >= B && _A % B == 0);
 }
+
 double fraction::value() const
 {
     return (double) A / B;

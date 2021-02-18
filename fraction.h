@@ -2,9 +2,8 @@
 #define _FRACTION_H_
 
 #include <iostream>
-#include <string.h>
 #include <cmath>
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 
 using std::cin;
@@ -23,7 +22,7 @@ public:
     static int lcm(int, int);
     void reduce();
     void print();
-    bool if_int() const;
+    bool is_int() const;
 
     void add(const fraction& );
     void add(int );
@@ -78,6 +77,8 @@ public:
     
     friend istream& operator>> (istream&, fraction&);
     friend ostream& operator<< (ostream&, const fraction&);
+
+    friend std::string to_string(const fraction & f);
 
     static fraction get_decimal_from_str(const std::string &, size_t * idx = nullptr);
     static fraction construct_from_str(const std::string &, size_t * idx = nullptr);
