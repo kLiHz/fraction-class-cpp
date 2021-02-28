@@ -52,25 +52,27 @@ std::string to_string(const Monomial & m) {
     std::string str;
     if (m.coef == 0) return str;
     if (m.expo == 0) return to_string(m.coef);
-    if (m.coef == -1) { str += "-"; }
-    else if (m.coef != 1) {
-        str += to_string(m.coef);
-        str += ' ';
-        str += 'x';
+    auto t_coef = m.coef;
+    if (t_coef < 0) {
+        str += "- ";
+        t_coef = -t_coef;
     }
+    if (t_coef.is_int()) { if (t_coef != 1) str += to_string(t_coef); }
+    else { str = str + "(" + to_string(t_coef) + ")"; }
+    str += 'x';
     if (m.expo != 1) {
         str += "^";
         if (m.expo < 0 || !(m.expo.is_int())) {
-            str += "(";
-            str += to_string(m.expo);
-            str += ")";
+            str = str + "(" + to_string(m.expo) + ")";
         }
         else str += to_string(m.expo);
     }
+    return str;
 }
 
 std::ostream& operator<<(std::ostream& stream, const Monomial & m) {
     stream << to_string(m);
+    return stream;
 }
 
 bool Monomial::operator<(const Monomial & t) const

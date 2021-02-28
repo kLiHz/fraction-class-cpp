@@ -117,9 +117,11 @@ std::ostream& operator<<(std::ostream& stream, const Polynomial & m) {
     stream << *rit;
     ++rit;
     for ( ; rit != m.data.rend(); ++rit) {
-        stream << " + ";
+        if (rit->coef > 0) stream << " + ";
+        else if (rit->coef < 0) stream << " ";
         stream << *rit;
     }
+    return stream;
 }
 
 void Polynomial::clear()
