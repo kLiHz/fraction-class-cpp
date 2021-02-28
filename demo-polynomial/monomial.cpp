@@ -1,118 +1,95 @@
 #include "monomial.h"
-using namespace std;
 
-void monomial::multiply(const monomial& t)
+void Monomial::multiply(const Monomial& t)
 {
     coef *= t.coef;
     expo += t.expo;
 }
-void monomial::divide(const monomial& t)
+void Monomial::divide(const Monomial& t)
 {
     coef /= t.coef;
     expo -= t.expo;
 }
-double monomial::value(double x)
+double Monomial::value(double x)
 {
     return double(coef) * pow(x, expo);
 }
-monomial monomial::operator*(const monomial& t) const
+Monomial Monomial::operator*(const Monomial& t) const
 {
-    monomial tmp(coef,expo);
+    Monomial tmp(coef,expo);
     tmp.multiply(t);
     return tmp;
 }
-monomial& monomial::operator*=(const monomial& t)
+Monomial& Monomial::operator*=(const Monomial& t)
 {
     multiply(t);
     return *this;
 }
-monomial monomial::operator+(const monomial & t) const
+Monomial Monomial::operator+(const Monomial & t) const
 {
-    return monomial(coef + t.coef, expo);
+    return Monomial(coef + t.coef, expo);
 }
-monomial & monomial::operator+=(const monomial & t)
+Monomial & Monomial::operator+=(const Monomial & t)
 {
     coef += t.coef;
     return *this;
 }
-monomial monomial::operator-() const
+Monomial Monomial::operator-() const
 {
-    return monomial(-coef, expo);
+    return Monomial(-coef, expo);
 }
-monomial monomial::operator-(const monomial & t) const
+Monomial Monomial::operator-(const Monomial & t) const
 {
-    return monomial(coef - t.coef, expo);
+    return Monomial(coef - t.coef, expo);
 }
-monomial & monomial::operator-=(const monomial & t)
+Monomial & Monomial::operator-=(const Monomial & t)
 {
     coef -= t.coef;
     return *this;
 }
 
-void monomial::print()
-{
-    if (coef == 0) return;
-    if (expo == 0) 
-    {
-        //coef.print();
-        cout << coef;
-        return;
+std::string to_string(const Monomial & m) {
+    std::string str;
+    if (m.coef == 0) return str;
+    if (m.expo == 0) return to_string(m.coef);
+    if (m.coef == -1) { str += "-"; }
+    else if (m.coef != 1) {
+        str += to_string(m.coef);
+        str += ' ';
+        str += 'x';
     }
-    if (abs(coef) == 1)
-    {
-        if (coef < 0) cout << " - ";
-    }
-    //else coef.print();
-    else cout << coef;
-    cout << ' ' << 'x';
-    if (expo != 1)
-    {
-        cout << "^";
-#ifdef _FRACTION_H_
-        if (!expo.if_int())
-#endif
-        if (expo < 0)
-        {
-            cout << "(";
-            //expo.print(); 
-            cout << expo;
-            cout << ")";
+    if (m.expo != 1) {
+        str += "^";
+        if (m.expo < 0 || !(m.expo.is_int())) {
+            str += "(";
+            str += to_string(m.expo);
+            str += ")";
         }
-        //else expo.print();
-        else cout << expo;
+        else str += to_string(m.expo);
     }
 }
 
-bool monomial::operator<(const monomial & t) const
+std::ostream& operator<<(std::ostream& stream, const Monomial & m) {
+    stream << to_string(m);
+}
+
+bool Monomial::operator<(const Monomial & t) const
 {
     return expo < t.expo;
 }
 
-bool monomial::operator==(const monomial & t) const
+bool Monomial::operator==(const Monomial & t) const
 {
     return expo == t.expo;
 }
 
-bool monomial::operator>(const monomial & t) const
+bool Monomial::operator>(const Monomial & t) const
 {
     return expo > t.expo;
 }
 
-bool monomial::operator!=(const monomial & t) const
+bool Monomial::operator!=(const Monomial & t) const
 {
     return expo != t.expo;
 }
 
-monomial::monomial(): coef(0), expo(0) {}
-
-#ifdef _FRACTION_H_
-monomial::monomial(const fraction & a, const fraction & b ): coef(a), expo(b) {}
-#else
-monomial::monomial(double a, double b) : coef(a), expo(b) {}
-#endif
-
-//monomial::monomial(int a, int b): coef(a), expo(b){}
-//monomial::monomial(fraction& a, int b):coef(a), expo(b){}
-//monomial::monomial(int a, fraction& b):coef(a), expo(b){}
-
-//monomial::monomial(const string & a, const string & b): coef(a), expo(b) {}

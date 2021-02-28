@@ -3,7 +3,10 @@
 //#include "legarcy/mono+poly.h" //poly2.0
 #include "monomial.h"
 #include "polynomial.h"
-using namespace std;
+
+using std::cin; 
+using std::cout;
+using std::endl;
 
 void command_promption()
 {
@@ -25,8 +28,8 @@ void command_promption()
     cout << "------------------------------------------ \n";
 }
 
-polynomial poly_a, poly_b;
-polynomial* now_opreate = &poly_a;
+Polynomial poly_a, poly_b;
+Polynomial* now_opreate = &poly_a;
 char now_opr = 'A';
 
 void guide(char choice)
@@ -40,7 +43,7 @@ void guide(char choice)
     double t_expo = 0;
 #endif
     double x;
-    polynomial tmp(poly_a);
+    Polynomial tmp(poly_a);
 
     switch (choice)
     {
@@ -75,10 +78,8 @@ void guide(char choice)
         t_coef = stod(s_coef);
         t_expo = stod(s_expo);
 #endif
-        now_opreate->modify_term_as(monomial(t_coef, t_expo));
-        cout << "Poly now becomes: ";
-        now_opreate->print();
-        cout << endl;
+        now_opreate->modify_term_as(Monomial(t_coef, t_expo));
+        cout << "Poly now becomes: " << *now_opreate << endl;
         break;
 
     case 't':
@@ -94,10 +95,8 @@ void guide(char choice)
         t_coef = stod(s_coef);
         t_expo = stod(s_expo);
 #endif
-        now_opreate->push(monomial(t_coef, t_expo));
-        cout << "Poly now becomes: ";
-        now_opreate->print();
-        cout << endl;
+        now_opreate->push(Monomial(t_coef, t_expo));
+        cout << "Poly now becomes: " << *now_opreate << endl;
         break;
 /*
     case 'i':
@@ -116,13 +115,12 @@ void guide(char choice)
         break;
 
     case 'v':
-        now_opreate->print();
-        cout << endl;
+        cout << *now_opreate << endl;
         break;
 
     case 'a':
-        cout << "Poly_A: "; poly_a.print(); cout << endl;
-        cout << "Poly_B: "; poly_b.print(); cout << endl;
+        cout << "Poly_A: " << poly_a << endl;
+        cout << "Poly_B: " << poly_b << endl;
         break;
 
     case 'e':
@@ -140,26 +138,22 @@ void guide(char choice)
             tmp.copy(poly_b);
         }
         tmp.derivate();
-        tmp.print();
-        cout << endl;
+        cout << tmp << endl;
         break;
 
     case '+':
         tmp.add(poly_b);
-        tmp.print();
-        cout << endl;
+        cout << tmp << endl;
         break;
 
     case '-':
         tmp.subtract(poly_b);
-        tmp.print();
-        cout << endl;
+        cout << tmp << endl;
         break;
 
     case '*':
         tmp.multiply(poly_b);
-        tmp.print();
-        cout << endl;
+        cout << tmp << endl;
         break;
 
     case 'q':
@@ -171,6 +165,7 @@ void guide(char choice)
     }
     return;
 }
+
 int main()
 {
     std::string choice = "h";

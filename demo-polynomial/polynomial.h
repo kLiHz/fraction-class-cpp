@@ -6,30 +6,32 @@
 #include <list>
 #include "monomial.h"
 
-class polynomial
+class Polynomial
 {
-    std::list<monomial> data; //terms are stored from smaller expo to bigger expo
+    std::list<Monomial> data; //terms are stored from smaller expo to bigger expo
 public:
-    void push(const monomial &);
-    void modify_term_as(const monomial &);
-    void add(/*const*/ polynomial &);
-    void add(const monomial &);
-    void subtract(/*const*/ polynomial &);
-    void subtract(const monomial &);
-    void multiply(const monomial &);
-    void multiply(/*const*/ polynomial &);
+    void push(const Monomial &);
+    void modify_term_as(const Monomial &);
+    void add(const Monomial &);
+    void add(const Polynomial &);
+    void subtract(const Monomial &);
+    void subtract(const Polynomial &);
+    void multiply(const Monomial &);
+    void multiply(const Polynomial &);
     void derivate();
 
-    void copy(const polynomial &);
+    void copy(const Polynomial &);
     void clear();
-    double value(double );
+    double value(double val);
 
-    void print();
-    void operator= (const polynomial &);
+    void operator= (const Polynomial &);
 
-    polynomial();
-    polynomial(const polynomial &);
-    ~polynomial();
+    // friend std::string to_string(const Monomial &);
+    friend std::ostream& operator<<(std::ostream&, const Polynomial &);
+
+    Polynomial() = default;
+    Polynomial(const Polynomial &);
+    ~Polynomial() = default;
 };
 
 #endif

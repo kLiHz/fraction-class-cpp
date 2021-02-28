@@ -1,10 +1,9 @@
 #include "polynomial.h"
-using namespace std;
 
-void polynomial::push(const monomial& n) //add_to_coef
+void Polynomial::push(const Monomial& n) //add_to_coef
 {
     bool has_insert = false;
-    std::list<monomial>::iterator it;
+    std::list<Monomial>::iterator it;
     for (it = data.begin(); it != data.end(); ++it)
     {
         if (n == *it) //equal expo term found
@@ -28,10 +27,10 @@ void polynomial::push(const monomial& n) //add_to_coef
     return;
 }
 
-void polynomial::modify_term_as(const monomial& n)
+void Polynomial::modify_term_as(const Monomial& n)
 {
     bool has_insert = false;
-    std::list<monomial>::iterator it;
+    std::list<Monomial>::iterator it;
     for (it = data.begin(); it != data.end(); ++it)
     {
         if (*it == n) 
@@ -54,68 +53,58 @@ void polynomial::modify_term_as(const monomial& n)
     }
     return;
 }
-void polynomial::add(polynomial& n)
+void Polynomial::add(const Polynomial& n)
 {
-    std::list<monomial>::iterator it;
-    for (it = n.data.begin(); it != n.data.end(); ++it)
-    {
-        push(*it);
-    }
+    for (auto i : n.data) this->push(i);
 }
-void polynomial::add(const monomial& n)
+void Polynomial::add(const Monomial& n)
 {
     push(n);
 }
-void polynomial::subtract(polynomial& n)
+void Polynomial::subtract(const Polynomial& n)
 {
-    std::list<monomial>::iterator it;
-    for (it = n.data.begin(); it != n.data.end(); ++it)
-    {
-        push(-(*it)); // or add(-(*it));
-    }
+    for (auto i : n.data) push(-i); // or add(-i);
 }
-void polynomial::subtract(const monomial& n)
+void Polynomial::subtract(const Monomial& n)
 {
     push(-n);
 }
 
-void polynomial::copy(const polynomial & n)
+void Polynomial::copy(const Polynomial & n)
 {
     data = n.data;
 }
 
-void polynomial::operator=(const polynomial& n)
+void Polynomial::operator=(const Polynomial& n)
 {
     data = n.data;
 }
 
-void polynomial::multiply(polynomial & n)
+void Polynomial::multiply(const Polynomial & n)
 {
-    std::list<monomial>::iterator it1, it2;
-    list<monomial> tmp;
-    for (it1 = data.begin(); it1 != data.end(); ++it1)
-    {
-        for (it2 = n.data.begin(); it2 != n.data.end(); ++it2)
-        {
-            tmp.push_back((*it1) * (*it2));
+    std::list<Monomial> tmp;
+    for (auto i : this->data) {
+        for (auto j : n.data) {
+            tmp.push_back(i * j);
         }
     }
     tmp.sort();
     data = tmp;
 }
 
-void polynomial::multiply(const monomial & n)
+void Polynomial::multiply(const Monomial & n)
 {
-    std::list<monomial>::iterator it;
+    std::list<Monomial>::iterator it;
     for (it = data.begin(); it != data.end(); ++it)
     {
         (*it) *= n;
     }
     //data.sort();
 }
-void polynomial::derivate()
+
+void Polynomial::derivate()
 {
-    std::list<monomial>::iterator it;
+    std::list<Monomial>::iterator it;
     for (it = data.begin(); it != data.end(); ++it)
     {
         it->coef *= it->expo;
@@ -123,26 +112,25 @@ void polynomial::derivate()
     }
 }
 
-void polynomial::print()
-{
-    bool flag = false;
-    for (std::list<monomial>::reverse_iterator rit = data.rbegin(); rit!=data.rend(); ++rit)
-    {
-        if (flag && rit->coef > 0) cout << " + ";
-        rit->print();
-        flag = true;
+std::ostream& operator<<(std::ostream& stream, const Polynomial & m) {
+    auto rit = m.data.rbegin();
+    stream << *rit;
+    ++rit;
+    for ( ; rit != m.data.rend(); ++rit) {
+        stream << " + ";
+        stream << *rit;
     }
 }
 
-void polynomial::clear()
+void Polynomial::clear()
 {
     data.clear();
 }
 
-double polynomial::value(double x)
+double Polynomial::value(double x)
 {
     double t = 0;
-    std::list<monomial>::iterator it;
+    std::list<Monomial>::iterator it;
     for (it = data.begin(); it != data.end(); ++it)
     {
         t += it->value(x);
@@ -150,9 +138,7 @@ double polynomial::value(double x)
     return t;
 }
 
-polynomial::polynomial(){}
-polynomial::polynomial(const polynomial & n)
+Polynomial::Polynomial(const Polynomial & n)
 {
     copy(n);
 }
-polynomial::~polynomial(){}

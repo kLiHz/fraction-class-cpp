@@ -2,17 +2,17 @@
 #define _MONO_POLY_H_
 
 //mono+poly 2.0: support non-int expo and limitless terms
-//class "polynomial" is integrated with a "monomial" container
+//class "Polynomial" is integrated with a "Monomial" container
 
 #include <iostream>
 #include <string.h>
 #include <cmath>
 #include <stdlib.h>
-#include "../../fraction.h"
+#include "fraction.h"
 
 using namespace std;
 
-class monomial
+class Monomial
 {
 public:
     fraction coef;
@@ -22,40 +22,40 @@ public:
     void print();
     //void set_letter();
 
-    void multiply(monomial& );
-    void divide(monomial& );
+    void multiply(Monomial& );
+    void divide(Monomial& );
     double value(double );
 
-    monomial operator*(monomial& );
+    Monomial operator*(Monomial& );
 
-    monomial();
-    monomial(int, int);
-    monomial(fraction&, int );
-    monomial(int, fraction& );
-    monomial(fraction&, fraction& );
-    monomial(const char*, const char* );
+    Monomial();
+    Monomial(int, int);
+    Monomial(fraction&, int );
+    Monomial(int, fraction& );
+    Monomial(fraction&, fraction& );
+    Monomial(const char*, const char* );
 };
-void monomial::multiply(monomial& t)
+void Monomial::multiply(Monomial& t)
 {
     coef.multiply(t.coef);
     expo.add(t.expo);
 }
-void monomial::divide(monomial& t)
+void Monomial::divide(Monomial& t)
 {
     coef.divide(t.coef);
     expo.subtract(t.expo);
 }
-double monomial::value(double x)
+double Monomial::value(double x)
 {
     return coef.value()*pow(x,expo.value());
 }
-monomial monomial::operator*(monomial& t)
+Monomial Monomial::operator*(Monomial& t)
 {
-    monomial tmp(coef,expo);
+    Monomial tmp(coef,expo);
     tmp.multiply(t);
     return tmp;
 }
-void monomial::print()
+void Monomial::print()
 {
     if (coef == 0) return;
     if (expo.value() == 0) 
@@ -74,7 +74,7 @@ void monomial::print()
     if (expo.value() != 1)
     {
         cout<<"^";
-        if (!expo.if_int() || expo < 0)
+        if (!expo.is_int() || expo < 0)
         {
             cout << "(";
             //expo.print(); 
@@ -85,20 +85,20 @@ void monomial::print()
         else cout << expo;
     }
 }
-monomial::monomial(): coef(0),expo(0) {}
+Monomial::Monomial(): coef(0),expo(0) {}
 
-monomial::monomial(int a, int b): coef(a), expo(b){}
-monomial::monomial(fraction& a, int b):coef(a), expo(b){}
-monomial::monomial(int a, fraction& b):coef(a), expo(b){}
+Monomial::Monomial(int a, int b): coef(a), expo(b){}
+Monomial::Monomial(fraction& a, int b):coef(a), expo(b){}
+Monomial::Monomial(int a, fraction& b):coef(a), expo(b){}
 
-monomial::monomial(fraction& a, fraction& b ): coef(a), expo(b) {}
-//monomial::monomial(fraction& a, fraction& b, char c = 'x'): letter(c), coef(a), expo(b) {}
-monomial::monomial(const char* a, const char* b): coef(a), expo(b) {}
+Monomial::Monomial(fraction& a, fraction& b ): coef(a), expo(b) {}
+//Monomial::Monomial(fraction& a, fraction& b, char c = 'x'): letter(c), coef(a), expo(b) {}
+Monomial::Monomial(const char* a, const char* b): coef(a), expo(b) {}
 
 /*
 class term
 {
-    monomial k;
+    Monomial k;
     term* previous;
     term* next;
     term():k(0,0){};
@@ -109,15 +109,15 @@ class Polynomial
 private:
     int num;
     //term* ptr;
-    monomial** data;
+    Monomial** data;
 public:
-    void push(monomial& );
-    void modify(monomial& );
+    void push(Monomial& );
+    void modify(Monomial& );
     void add(Polynomial& );
     void subtract(Polynomial& );
-    void add(monomial& );
-    void subtract(monomial& );
-    void multiply(monomial& );
+    void add(Monomial& );
+    void subtract(Monomial& );
+    void multiply(Monomial& );
     void multiply(Polynomial& );
     void derivate();
 
@@ -132,12 +132,12 @@ public:
     Polynomial(Polynomial& );
     ~Polynomial();
 };
-void Polynomial::push(monomial& n) //add_to_coef
+void Polynomial::push(Monomial& n) //add_to_coef
 {
     if (num == 0)
     {
-        data = new monomial*[num+1];
-        data[num] = new monomial;
+        data = new Monomial*[num+1];
+        data[num] = new Monomial;
         *data[num] = n;
         num++;
         return ;
@@ -151,9 +151,9 @@ void Polynomial::push(monomial& n) //add_to_coef
             if (data[i]->coef == 0) 
             {
                 delete data[i];
-                monomial** tdata;
+                Monomial** tdata;
                 if(num - 1 > 0) {
-                    tdata = new monomial*[num-1];
+                    tdata = new Monomial*[num-1];
                     int k = 0, j = 0;
                     while(j < num)
                     {
@@ -173,10 +173,10 @@ void Polynomial::push(monomial& n) //add_to_coef
         }
     }
     //add a new term
-    monomial** tdata = new monomial*[num+1];
+    Monomial** tdata = new Monomial*[num+1];
     int k = 0, i = 0;
     while (i < num && data[i]->expo > n.expo) tdata[k++] = data[i++];
-    tdata[k] = new monomial;
+    tdata[k] = new Monomial;
     *tdata[k++] = n;
     while (i < num) tdata[k++] = data[i++];
     delete []data;
@@ -184,7 +184,7 @@ void Polynomial::push(monomial& n) //add_to_coef
     num++;
     return ;
 }
-void Polynomial::modify(monomial& n)
+void Polynomial::modify(Monomial& n)
 {
     for (int i = 0; i < num; i++)
     {
@@ -203,14 +203,14 @@ void Polynomial::add(Polynomial& n)
         push(*n.data[i]);
     }
 }
-void Polynomial::add(monomial& n)
+void Polynomial::add(Monomial& n)
 {
     push(n);
 }
 
 void Polynomial::subtract(Polynomial& n)
 {
-    monomial t;
+    Monomial t;
     for (int i = 0; i < n.num; i++)
     {
         t = *n.data[i];
@@ -218,9 +218,9 @@ void Polynomial::subtract(Polynomial& n)
         push(t);
     }
 }
-void Polynomial::subtract(monomial& n)
+void Polynomial::subtract(Monomial& n)
 {
-    monomial t(n);
+    Monomial t(n);
     t.coef = 0 - t.coef;
     push(t);
 }
@@ -238,10 +238,10 @@ void Polynomial::copy(Polynomial& n)
     }
     clear();
     num = n.num;
-    data = new monomial*[n.num];
+    data = new Monomial*[n.num];
     for (int i = 0; i< n.num;i++)
     {
-        data[i] = new monomial;
+        data[i] = new Monomial;
         *data[i] = *n.data[i];
     }
     return;
@@ -253,7 +253,7 @@ void Polynomial::operator= (Polynomial& n)
 void Polynomial::multiply(Polynomial& n)
 {
     Polynomial tmp;
-    monomial t;
+    Monomial t;
     for (int i = 0; i< num; i++)
     {
         for (int j = 0; j < n.num; j++)
@@ -264,10 +264,10 @@ void Polynomial::multiply(Polynomial& n)
     }
     copy(tmp);
 }
-void Polynomial::multiply(monomial& n)
+void Polynomial::multiply(Monomial& n)
 {
     Polynomial tmp;
-    monomial t;
+    Monomial t;
     for (int i = 0; i < num; i++)
     {
         t = (*data[i]) * n;

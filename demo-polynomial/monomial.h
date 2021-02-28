@@ -4,44 +4,42 @@
 #include <iostream>
 #include <string.h>
 #include <cmath>
-#include "../fraction.h"
+#include "fraction.h"
 
-class monomial
+class Monomial
 {
 public:
 #ifdef _FRACTION_H_
     fraction coef;
     fraction expo;
-    monomial(const fraction &, const fraction &);
+    Monomial(const fraction & a, const fraction & b ): coef(a), expo(b) {}
 #else
     double coef;
     double expo;
-    monomial(double, double);
+    Monomial(double a, double b) : coef(a), expo(b) {}
 #endif
-    void print();
 
-    void multiply(const monomial &);
-    void divide(const monomial &);
+    void multiply(const Monomial &);
+    void divide(const Monomial &);
     double value(double);
 
-    monomial operator+(const monomial &) const;
-    monomial operator-(const monomial &) const;
-    monomial operator*(const monomial &) const;
-    monomial operator-() const;
-    monomial & operator+=(const monomial &);
-    monomial & operator*=(const monomial &);
-    monomial & operator-=(const monomial &);
+    Monomial operator+(const Monomial &) const;
+    Monomial operator-(const Monomial &) const;
+    Monomial operator*(const Monomial &) const;
+    Monomial operator-() const;
+    Monomial & operator+=(const Monomial &);
+    Monomial & operator*=(const Monomial &);
+    Monomial & operator-=(const Monomial &);
     
-    bool operator<(const monomial &) const; //compare by exponent
-    bool operator>(const monomial &) const;
-    bool operator==(const monomial &) const; //compare by exponent
-    bool operator!=(const monomial &) const;
+    bool operator<(const Monomial &) const; //compare by exponent
+    bool operator>(const Monomial &) const;
+    bool operator==(const Monomial &) const; //compare by exponent
+    bool operator!=(const Monomial &) const;
     
-    monomial();
-    //monomial(int, int);
-    //monomial(fraction&, int );
-    //monomial(int, fraction& );
-    //monomial(const std::string &, const std::string &);
+    friend std::string to_string(const Monomial &);
+    friend std::ostream& operator<<(std::ostream&, const Monomial &);
+
+    Monomial() : coef(0), expo(0) {}
 };
 
 #endif
