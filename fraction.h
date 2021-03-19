@@ -21,14 +21,13 @@ public:
     static int gcd(int, int);
     static int lcm(int, int);
     void reduce();
-    void print();
     bool is_int() const;
 
-    void add(const fraction& );
-    void add(int );
-    void subtract(const fraction& );
-    void multiply(const fraction& );
-    void divide(const fraction& );
+    fraction & add(const fraction& );
+    fraction & add(int );
+    fraction & subtract(const fraction& );
+    fraction & multiply(const fraction& );
+    fraction & divide(const fraction& );
     double value() const;
 
     fraction operator+ (const fraction& ) const;

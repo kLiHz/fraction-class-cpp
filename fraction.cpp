@@ -11,13 +11,8 @@ int fraction::gcd(int x, int y)
 
 int fraction::lcm(int a, int b)
 {
-	//return a*b/gcd(a,b);
-    //if (a % b == 0) return a;
-    //if (b % a == 0) return b;
     if (a == 0 || b == 0) return 0;
-    int t_gcd = gcd(a,b);
-    if (a % t_gcd == 0) a /= t_gcd;
-    else if (b % t_gcd == 0) b /= t_gcd;
+    a /= gcd(a,b);
     return a * b;
 }
 
@@ -54,11 +49,10 @@ fraction::operator double() const
     return value();
 }
 
-void fraction::add(const fraction& addend)
+fraction & fraction::add(const fraction& addend)
 {
     if (B == addend.B) {
         A += addend.A;
-        return;
     }
     else if (addend.B == 1) {
         A += (addend.A * B);
@@ -72,12 +66,13 @@ void fraction::add(const fraction& addend)
         A += (addend.A * m2);
         reduce();
     }
+    return *this;
 }
-void fraction::add(int n)
+fraction & fraction::add(int n)
 {
     A += n*B;
 }
-void fraction::subtract(const fraction& subtrahend)
+fraction & fraction::subtract(const fraction& subtrahend)
 {
     if (B == subtrahend.B) {
         A -= subtrahend.A;
@@ -95,8 +90,9 @@ void fraction::subtract(const fraction& subtrahend)
         A -= (subtrahend.A * m2);
         reduce();
     }
+    return *this;
 }
-void fraction::multiply(const fraction& multiplier)
+fraction & fraction::multiply(const fraction& multiplier)
 {
     int d1 = 1, d2 = 1;
     if (A != 0) d1 = gcd(A, multiplier.B);
@@ -107,12 +103,11 @@ void fraction::multiply(const fraction& multiplier)
     B *= (multiplier.B / d1);
     //reduce();
 }
-void fraction::divide(const fraction& divisor)
+fraction & fraction::divide(const fraction& divisor)
 {
-    if (divisor.A == 0) {cout << "cannot divided by 0!\n"; return;}\
-    int d1 = 1, d2 = 1;
-    d1 = gcd(B,divisor.B);
-    if (A != 0 && divisor.A != 0) d2 = gcd(A,divisor.A);
+    if (divisor.A == 0) { throw "cannot divided by 0!"; } // TODO
+    int d1 = gcd(B, divisor.B);
+    int d2 = (A != 0) ? gcd(A, divisor.A) : 1;
     A /= d2;
     B /= d1;
     A *= (divisor.B / d1);
@@ -132,14 +127,6 @@ void fraction::reduce()
     A /= d;
     B /= d;
     if (if_negative) A = -A;
-}
-void fraction::print()
-{
-    int tA = abs(A);
-    if (A < 0) cout << " - ";
-    if (tA >= B && tA % B == 0) cout << (tA/B);
-    else if (tA == 0) cout<<0;
-    else cout << tA << "/" << B;
 }
 
 bool fraction::is_int() const
@@ -325,23 +312,19 @@ bool fraction::operator!= (const fraction& t) const
 }
 bool fraction::operator> (const fraction& t) const
 {
-    if (compare(t) == 1) return true;
-    else return false;
+    return this->compare(t) == 1;
 }
 bool fraction::operator< (const fraction& t) const
 {
-    if (compare(t) == -1) return true;
-    else return false;
+    return this->compare(t) == -1;
 }
 bool fraction::operator>= (const fraction& t) const
 {
-    if(compare(t) != -1) return true;
-    else return false;
+    return this->compare(t) != -1;
 }
 bool fraction::operator<= (const fraction& t) const
 {
-    if(compare(t) != 1) return true;
-    else return false;
+    return this->compare(t) != 1;
 }
 bool fraction::operator== (double t) const
 {
