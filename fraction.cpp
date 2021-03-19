@@ -71,12 +71,12 @@ fraction & fraction::add(const fraction& addend)
 fraction & fraction::add(int n)
 {
     A += n*B;
+    return *this;
 }
 fraction & fraction::subtract(const fraction& subtrahend)
 {
     if (B == subtrahend.B) {
         A -= subtrahend.A;
-        return;
     }
     else if (subtrahend.B == 1) {
         A -= (subtrahend.A * B);
@@ -102,6 +102,7 @@ fraction & fraction::multiply(const fraction& multiplier)
     A *= (multiplier.A / d2);
     B *= (multiplier.B / d1);
     //reduce();
+    return *this;
 }
 fraction & fraction::divide(const fraction& divisor)
 {
@@ -113,6 +114,7 @@ fraction & fraction::divide(const fraction& divisor)
     A *= (divisor.B / d1);
     B *= (divisor.A / d2);
     //reduce();
+    return *this;
 }
 void fraction::reduce()
 {
