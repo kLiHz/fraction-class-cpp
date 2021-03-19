@@ -1,4 +1,9 @@
 .vscode/
+
+[Bb]uild
+[Rr]elease
+[Dd]ebug
+
 *.o
 *.exe
 *.out
