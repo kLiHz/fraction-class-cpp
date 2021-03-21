@@ -8,9 +8,9 @@ using std::endl;
 
 int main()
 {
-    fraction a(1, 3), b(1, 3);
+    frac a(1, 3), b(1, 3);
     Monomial m1(b, a);
-    Monomial m2("3/5", "2.5");
+    Monomial m2(frac("3/5"), frac("2.5"));
     Polynomial t1;
 
     cout << "m1: " << m1 << endl;

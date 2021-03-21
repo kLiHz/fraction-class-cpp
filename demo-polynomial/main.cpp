@@ -71,9 +71,9 @@ void guide(char choice)
         cout << "指数 > ";
         getline(cin, s_expo);
 
-#ifdef _FRACTION_H_
-        t_coef = fraction(s_coef);
-        t_expo = fraction(s_expo);
+#ifdef _FRACTION_HPP_
+        t_coef = frac(s_coef);
+        t_expo = frac(s_expo);
 #else
         t_coef = stod(s_coef);
         t_expo = stod(s_expo);
@@ -88,9 +88,9 @@ void guide(char choice)
         cout << "指数 > ";
         getline(cin, s_expo);
 
-#ifdef _FRACTION_H_
-        t_coef = fraction(s_coef);
-        t_expo = fraction(s_expo);
+#ifdef _FRACTION_HPP_
+        t_coef = frac(s_coef);
+        t_expo = frac(s_expo);
 #else
         t_coef = stod(s_coef);
         t_expo = stod(s_expo);
