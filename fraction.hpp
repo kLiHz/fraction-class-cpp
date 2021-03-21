@@ -39,9 +39,9 @@ public:
         return IntPair(a, b);
     }
 
-    void reduce() {
+    fraction & reduce() {
         bool negative = false;
-        if (this->A == 0) { this->B = 1; return; }
+        if (this->A == 0) { this->B = 1; return *this; }
         if ((this->A < 0 && this->B > 0) || (this->A > 0 && this->B < 0)) negative = true; // A*B < 0
         this->A = std::abs(this->A);
         this->B = std::abs(this->B);
@@ -49,6 +49,7 @@ public:
         this->A /= d;
         this->B /= d;
         if (negative) this->A = -(this->A);
+        return *this;
     }
 
     bool is_int() const {
@@ -256,7 +257,7 @@ fraction<IntType> fraction<IntType>::get_decimal_from_str(const std::string & st
     bool negative = false;
 
     std::size_t pos1 = str.find_first_of(nums);       //寻找第一个数字出现的位置
-    if (pos1 == std::string::npos) return 0;          //没有找到任何可能的数字，返回0
+    if (pos1 == std::string::npos) return fraction<IntType>{0};          //没有找到任何可能的数字，返回0
     if (pos1 > 0) negative = (str[pos1-1] == '-'); //识别数字前边是否存在负号
     
     //寻找之后第一个不是数字的位置/潜在的小数点

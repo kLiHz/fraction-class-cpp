@@ -20,14 +20,17 @@ private:
 public:
     static int gcd(int, int);
     static int lcm(int, int);
-    void reduce();
+    fraction & reduce();
     bool is_int() const;
 
     fraction & add(const fraction& );
     fraction & add(int );
     fraction & subtract(const fraction& );
+    fraction & subtract(int);
     fraction & multiply(const fraction& );
+    fraction & multiply(int);
     fraction & divide(const fraction& );
+    fraction & divide(int);
     double value() const;
 
     fraction operator+ (const fraction& ) const;
@@ -74,9 +77,6 @@ public:
 
     operator double() const;
     
-    friend istream& operator>> (istream&, fraction&);
-    friend ostream& operator<< (ostream&, const fraction&);
-
     friend std::string to_string(const fraction & f);
 
     static fraction get_decimal_from_str(const std::string &, size_t * idx = nullptr);
@@ -88,5 +88,8 @@ public:
     fraction(const char* );
     fraction(const std::string &);
 };
+    
+istream& operator>> (istream&, fraction&);
+ostream& operator<< (ostream&, const fraction&);
 
 #endif

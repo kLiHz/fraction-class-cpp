@@ -18,7 +18,6 @@ int fraction::lcm(int a, int b)
 
 istream& operator>> (istream& is, fraction& f)
 {
-    //char input[100];
     std::string input;
     is >> input;
     f = fraction::construct_from_str(input);
@@ -35,7 +34,7 @@ std::string to_string(const fraction & f) {
     std::string str;
     if ( f < 0 ) str += "-";
     if ( f.is_int() ) {
-        str += std::to_string( int(abs(f.A) / f.B) );
+        str += std::to_string( int(std::abs(f.A) / f.B) );
     } else {
         str += std::to_string( f.A );
         str += "/";
@@ -68,11 +67,13 @@ fraction & fraction::add(const fraction& addend)
     }
     return *this;
 }
+
 fraction & fraction::add(int n)
 {
     A += n*B;
     return *this;
 }
+
 fraction & fraction::subtract(const fraction& subtrahend)
 {
     if (B == subtrahend.B) {
@@ -92,6 +93,13 @@ fraction & fraction::subtract(const fraction& subtrahend)
     }
     return *this;
 }
+
+fraction & fraction::subtract(int n)
+{
+    A -= n*B;
+    return *this;
+}
+
 fraction & fraction::multiply(const fraction& multiplier)
 {
     int d1 = 1, d2 = 1;
@@ -104,6 +112,15 @@ fraction & fraction::multiply(const fraction& multiplier)
     //reduce();
     return *this;
 }
+
+fraction & fraction::multiply(int val) {
+    auto gcd_ = gcd(B, val);
+    B   /= gcd_;
+    val /= gcd_;
+    A   *= val;
+    return *this;
+}
+
 fraction & fraction::divide(const fraction& divisor)
 {
     if (divisor.A == 0) { throw "cannot divided by 0!"; } // TODO
@@ -116,24 +133,35 @@ fraction & fraction::divide(const fraction& divisor)
     //reduce();
     return *this;
 }
-void fraction::reduce()
+
+fraction & fraction::divide(int val) {
+    auto gcd_ = gcd(A, val);
+    A   /= gcd_;
+    val /= gcd_;
+    B   *= val;
+    return *this;
+}
+
+fraction & fraction::reduce()
 {
     bool if_negative = false;
+    if (this->A == 0) { this->B == 1; return *this; }
     if ((A < 0 && B > 0) || (A > 0 && B < 0)) //if (A * B < 0)
     {
         if_negative = true;
     }
-    A = abs(A);
-    B = abs(B);
-    int d = gcd(A,B);
+    A = std::abs(A);
+    B = std::abs(B);
+    auto d = gcd(A,B);
     A /= d;
     B /= d;
     if (if_negative) A = -A;
+    return *this;
 }
 
 bool fraction::is_int() const
 {
-    auto _A = abs(A);
+    auto _A = std::abs(A);
     return _A == 0 || (_A >= B && _A % B == 0);
 }
 
@@ -144,85 +172,57 @@ double fraction::value() const
 
 fraction fraction::operator+ (const fraction& addend) const
 {
-    fraction t(A,B);
-    t.add(addend);
-    return t;
+    return fraction(A,B).add(addend);
 }
 fraction fraction::operator- (const fraction& subtrahend) const
 {
-    fraction t(A,B);
-    t.subtract(subtrahend);
-    return t;
+    return fraction(A,B).subtract(subtrahend);
 }
 fraction fraction::operator* (const fraction& multiplier) const
 {
-    fraction t(A,B);
-    t.multiply(multiplier);
-    return t;
+    return fraction(A,B).multiply(multiplier);
 }
 fraction fraction::operator/ (const fraction& divisor) const
 {
-    fraction t(A,B);
-    t.divide(divisor);
-    return t;
+    return fraction(A,B).divide(divisor);
 }
 
-fraction fraction::operator+ (int num ) const
+fraction fraction::operator+ (int num) const
 {
-    fraction addend(num);
-    fraction t(A,B);
-    t.add(addend);
-    return t;
+    return fraction(A,B).add(num);
 }
-fraction fraction::operator- (int num ) const
+fraction fraction::operator- (int num) const
 {
-    fraction subtrahend(num);
-    fraction t(A,B);
-    t.subtract(subtrahend);
-    return t;
+    return fraction(A,B).subtract(num);
 }
 fraction fraction::operator- () const
 {
     return fraction(-A,B);
 }
-fraction fraction::operator* (int num ) const
+fraction fraction::operator* (int num) const
 {
-    fraction multiplier(num);
-    fraction t(A,B);
-    t.multiply(multiplier);
-    return t;
+    return fraction(A,B).multiply(num);
 }
-fraction fraction::operator/ (int num ) const
+fraction fraction::operator/ (int num) const
 {
-    fraction divisor(num);
-    fraction t(A,B);
-    t.divide(divisor);
-    return t;
+    return fraction(A,B).divide(num);
 }
 
 fraction operator+ (int num, const fraction& t)
 {
-    fraction p(num);
-    p.add(t);
-    return p;
+    return t + num;
 }
 fraction operator- (int num, const fraction& t)
 {
-    fraction p(num);
-    p.subtract(t);
-    return p;
+    return t - num;
 }
 fraction operator* (int num, const fraction& t)
 {
-    fraction p(num);
-    p.multiply(t);
-    return p;
+    return t * num;
 }
 fraction operator/ (int num, const fraction& t)
 {
-    fraction p(num);
-    p.divide(t);
-    return p;
+    return t / num;
 }
 
 fraction & fraction::operator+= (const fraction& addend)
@@ -248,27 +248,19 @@ fraction & fraction::operator/= (const fraction& divisor)
 
 fraction & fraction::operator+= (int num)
 {
-    fraction t(num);
-    add(t);
-    return *this;
+    this->add(num); return *this;
 }
 fraction & fraction::operator-= (int num)
 {
-    fraction t(num);
-    subtract(t);
-    return *this;
+    this->subtract(num); return *this;
 }
 fraction & fraction::operator*= (int num)
 {
-    fraction t(num);
-    multiply(t);
-    return *this;
+    this->multiply(num); return *this;
 }
 fraction & fraction::operator/= (int num)
 {
-    fraction t(num);
-    divide(t);
-    return *this;
+    this->divide(num); return *this;
 }
 
 int fraction::compare(const fraction& t) const
