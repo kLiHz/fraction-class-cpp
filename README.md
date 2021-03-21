@@ -8,15 +8,18 @@ A C++ fraction class which may enable you to use fraction in you C++ program.
 
 ```cpp
 #include <iostream>
-#inclued "fraction.hpp"`
+#include "fraction.hpp"
 
 int main() {
     using frac = fraction<int>;
-    frac a, b(1,2), c(3,4);
+
+    std::cout << frac("1/3") + frac(1,4) * frac(1,2);
+
+    frac a, b(1,2), c("3/4");
+
     std::cin >> a;
     std::cout << a + b;
-    c *= b;
-    std::cout << c;
+    std::cout << c * b;
 }
 ```
 
@@ -61,3 +64,8 @@ g++ fraction.cpp demo.cpp -o main
 
 2021/03/19 update: Now `fraction` is a template class and header-only.
 
+## Other Fraction Class Repos on GitHub
+
+- https://github.com/Anmol-Singh-Jaggi/Fraction-Library/blob/master/fraction.cpp
+- https://github.com/featdd/FractionClass
+- https://github.com/avivaprins/Fraction
