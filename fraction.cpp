@@ -145,7 +145,7 @@ fraction & fraction::divide(int val) {
 fraction & fraction::reduce()
 {
     bool if_negative = false;
-    if (this->A == 0) { this->B == 1; return *this; }
+    if (this->A == 0) { this->B = 1; return *this; }
     if ((A < 0 && B > 0) || (A > 0 && B < 0)) //if (A * B < 0)
     {
         if_negative = true;
