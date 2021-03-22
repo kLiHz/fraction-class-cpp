@@ -8,6 +8,14 @@ include_directories(.)
 
 add_library(fraction STATIC ${PROJECT_SOURCE_DIR}/fraction.cpp)
 
+# Polynomial Calculator
+
 add_subdirectory(demo-polynomial)
 
+# Fraction Demo
+
 add_executable(fraction_demo demo.cpp)
+
+# Fraction CalCulator
+
+add_subdirectory(fraction-calculator)
