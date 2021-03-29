@@ -34,13 +34,30 @@ void trim(std::string & str) {
     if (beginning != std::string::npos) str = str.substr(beginning);
 }
 
+bool is_legal_varname(std::string & varname) {
+    static std::string numbers = "0123456789";
+    if (numbers.find(varname[0]) != std::string::npos) return false; 
+}
+
+bool parse(std::string & line) {
+    std::string numbers = "0123456789./";
+    size_t pos = 0;
+    if (line[0] >= '0' || line[0] <= '9' || line[0] == '.') {
+        // frac;
+        auto f = frac::construct_from_str(line, &pos);
+        
+    }
+    
+}
+
 int main() {
     FracTable frac_table;
     bool running = true;
     while (running) {
         std::cout << ">>> ";
         std::string line;
-        std::getline(std::cin, line);
+        if (!std::getline(std::cin, line)) running = false;
+        trim(line);
         auto assignment_pos = line.find("=");
         if (assignment_pos != std::string::npos) {
             auto var_name = line.substr(0, assignment_pos);
@@ -50,7 +67,6 @@ int main() {
             frac_table.push(var_name, var);
         }
         else {
-            trim(line);
             auto var_name = line.substr(0, line.find(" "));
             if (frac_table.has(var_name)) {
                 std::cout << var_name << " = " << frac_table.get(var_name) << std::endl;
