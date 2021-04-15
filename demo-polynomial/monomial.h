@@ -2,17 +2,21 @@
 #define _MONOMIAL_H_
 
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <cmath>
-#include "fraction.h"
+#include "fraction.hpp"
+
+#ifdef _FRACTION_HPP_
+    using frac = fraction<int>;
+#endif
 
 class Monomial
 {
 public:
-#ifdef _FRACTION_H_
-    fraction coef;
-    fraction expo;
-    Monomial(const fraction & a, const fraction & b ): coef(a), expo(b) {}
+#ifdef _FRACTION_HPP_
+    frac coef;
+    frac expo;
+    Monomial(const frac & a, const frac & b ): coef(a), expo(b) {}
 #else
     double coef;
     double expo;

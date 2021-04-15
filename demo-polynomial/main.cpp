@@ -35,9 +35,9 @@ char now_opr = 'A';
 void guide(char choice)
 {
     std::string usr_input, s_coef, s_expo;
-#ifdef _FRACTION_H_
-    fraction t_coef = 0;
-    fraction t_expo = 0;
+#ifdef _FRACTION_HPP_
+    frac t_coef = 0;
+    frac t_expo = 0;
 #else
     double t_coef = 0;
     double t_expo = 0;
@@ -71,9 +71,9 @@ void guide(char choice)
         cout << "指数 > ";
         getline(cin, s_expo);
 
-#ifdef _FRACTION_H_
-        t_coef = fraction(s_coef);
-        t_expo = fraction(s_expo);
+#ifdef _FRACTION_HPP_
+        t_coef = frac(s_coef);
+        t_expo = frac(s_expo);
 #else
         t_coef = stod(s_coef);
         t_expo = stod(s_expo);
@@ -88,9 +88,9 @@ void guide(char choice)
         cout << "指数 > ";
         getline(cin, s_expo);
 
-#ifdef _FRACTION_H_
-        t_coef = fraction(s_coef);
-        t_expo = fraction(s_expo);
+#ifdef _FRACTION_HPP_
+        t_coef = frac(s_coef);
+        t_expo = frac(s_expo);
 #else
         t_coef = stod(s_coef);
         t_expo = stod(s_expo);
@@ -119,8 +119,8 @@ void guide(char choice)
         break;
 
     case 'a':
-        cout << "Poly_A: " << poly_a << endl;
-        cout << "Poly_B: " << poly_b << endl;
+        cout << "A: " << poly_a << endl;
+        cout << "B: " << poly_b << endl;
         break;
 
     case 'e':

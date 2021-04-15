@@ -12,7 +12,7 @@ add_executable( poly_mono_demo
     polynomial.cpp
 )
 
-target_link_libraries(poly_mono_demo fraction)
+# target_link_libraries(poly_mono_demo fraction)
 
 add_executable( poly3 
     main.cpp 
@@ -22,4 +22,4 @@ add_executable( poly3
     polynomial.cpp
 )
 
-target_link_libraries(poly3 fraction)
+# target_link_libraries(poly3 fraction)

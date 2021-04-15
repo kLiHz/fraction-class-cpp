@@ -3,12 +3,12 @@
 
 #include <iostream>
 #include <cmath>
-#include <list>
+#include <map>
 #include "monomial.h"
 
 class Polynomial
 {
-    std::list<Monomial> data; //terms are stored from smaller expo to bigger expo
+    std::map<frac, Monomial> data; //terms are stored from smaller expo to bigger expo
 public:
     void push(const Monomial &);
     void modify_term_as(const Monomial &);
