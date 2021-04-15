@@ -10,9 +10,11 @@ Now there are 3 versions of this program.
 
 `Poly2` is developed after `fraction` class is finished (or maybe in fact the `fraction` class is developed in order to improve `Poly1`). This version introduced the concept of `Monomial` and `Polynomial` and uses dynamic memory management, or maybe you can say the the `Polynomial` class is a container of the `Monomial` class.
 
-`Poly3` makes some changes compared to `Poly2`. The class `Polynomial` uses `std::list<Monomial>` to manage all of its terms instead of making itself a container. (But this is still not quite good, I'm planning to implement a tree structure for this.)
+`Poly3` makes some changes compared to `Poly2`. The class `Polynomial` now uses `std::map<Monomial>` to manage all of its terms instead of making itself a container. 
 
 Since the 2nd and 3rd versions' difference are about data structure and they share the same controlling interface, so you can change the file included in `main.cpp` to shift between these two version. (Currently, as for `Poly3`, you need to link three object file together, but there is no need to do this for `Poly2`)
+
+**Update**: Now this project is using CMake, so now there is no need to do those compiling and linking stuff manually.
 
 ## When not in the mood of using fraction class...
 
