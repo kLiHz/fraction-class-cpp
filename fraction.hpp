@@ -246,7 +246,7 @@ public:
         if ( f.is_int() ) {
             str += std::to_string( std::abs(f.A) / f.B );
         } else {
-            str += std::to_string( f.A );
+            str += std::to_string( std::abs(f.A) );
             str += "/";
             str += std::to_string( f.B );
         }
