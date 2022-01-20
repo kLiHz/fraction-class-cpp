@@ -184,11 +184,11 @@ public:
 
     friend fraction operator+(IntType val, const fraction & frac) { return frac + val; }
 
-    friend fraction operator-(IntType val, const fraction & frac) { return frac - val; }
+    friend fraction operator-(IntType val, const fraction & frac) { return fraction(val) - frac; }
 
     friend fraction operator*(IntType val, const fraction & frac) { return frac * val; }
 
-    friend fraction operator/(IntType val, const fraction & frac) { return frac / val; }
+    friend fraction operator/(IntType val, const fraction & frac) { return fraction(val) / frac; }
 
     fraction & operator+=(const fraction & other) { return this->      add(other); }
     fraction & operator-=(const fraction & other) { return this-> subtract(other); }
