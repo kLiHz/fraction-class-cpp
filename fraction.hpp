@@ -201,12 +201,26 @@ public:
     fraction & operator/=(IntType val) { return this->   divide(val); }
 
     int compare(const fraction & other) const {
-        if ((this->A < 0 && this->B > 0) || (this->A > 0 && this->B < 0)) {
-            if (this->A < 0) return -1;
-            if (other.A < 0) return  1;
+        // special case when two fractions have opposite flags
+        // notice that the flag is always on the numerator
+
+        if ((this->A > 0 && other.A < 0) || (this->A < 0 && other.A > 0)) {
+            return (this->A < 0) ? -1 : 1;
         }
-        if (this->A * other.B < other.A * this->B) return -1;
-        else if (this->A * other.B == other.A * this->B) return 0;
+
+        // this->a / this->b [?] other.a / other.b
+        // == multiply this->b * other.b on both side ==>
+        // lhs [?] rhs
+
+        auto lhs = this->A * other.B;
+        auto rhs = other.A * this->B;
+
+        // since that the flag is on numerator
+        // no need to check the multiplier
+        // auto flag = ((this->B < 0 && other.B > 0) || (this->B > 0 && other.B < 0)) ? -1 : 1;
+
+        if (lhs < rhs) return -1;
+        else if (lhs == rhs) return 0;
         else return 1;
     }
     
