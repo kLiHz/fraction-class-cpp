@@ -1,25 +1,20 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(Polynomial-Calculator)
+set(CXX_STANDARD_REQUIRED 14)
 
-include_directories(.)
+project(Polynomial)
 
-add_executable( poly_mono_demo 
-    demo.cpp 
-    monomial.h 
-    polynomial.h
-    monomial.cpp 
-    polynomial.cpp
-)
+# poly-mono file glob
 
-# target_link_libraries(poly_mono_demo fraction)
+add_library(poly_mono STATIC monomial.h monomial.cpp polynomial.h polynomial.cpp)
+target_link_libraries(poly_mono fraction_header_only)
 
-add_executable( poly3 
-    main.cpp 
-    monomial.h 
-    polynomial.h
-    monomial.cpp 
-    polynomial.cpp
-)
+# poly-mono demo
 
-# target_link_libraries(poly3 fraction)
+add_executable(poly_mono_demo demo.cpp)
+target_link_libraries(poly_mono_demo poly_mono fraction_header_only)
+
+# Polynomial Calculator
+
+add_executable(poly3 main.cpp)
+target_link_libraries(poly3 poly_mono fraction_header_only)
