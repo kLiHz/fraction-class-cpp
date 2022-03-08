@@ -5,7 +5,6 @@
 
 using std::cin;
 using std::cout;
-using std::endl;
 
 int main()
 {
@@ -17,7 +16,9 @@ int main()
     cin >> m;
     cout << "Input n: ";
     cin >> n;
-    cout << "The product of m and n is: " << m * n << endl;
+    cout << "The product of m and n is: " << m * n << "\n\n";
+
+    // Construct from string
 
     std::vector<frac> fracs;
     std::string str = "1 / 2  3.4a.s.3.3 / 9.9  55/66  4.5/9 3";
@@ -30,7 +31,18 @@ int main()
     }
 
     for (auto f : fracs) cout << f << ' ';
-    std::cout << std::endl;
+    std::cout << "\n\n";
+    
+    // Construct from double
+
+    double val;
+    int precision;
+    std::cout << "Value: ";
+    std::cin >> val;
+    std::cout << "Precision: ";
+    std::cin >> precision;
+
+    std::cout << "The fraction should be '" << frac(val, precision) << "'.\n";
 
     return 0;
 }

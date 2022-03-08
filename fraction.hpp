@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 #include <string>
+#include <sstream>
 
 template <typename IntType>
 class fraction
@@ -260,6 +261,13 @@ public:
     fraction(IntType val) : A(val), B(1) {}
     fraction(IntType a, IntType b) : A(a), B(b) { this->reduce(); }
     fraction(const std::string & str);
+    fraction(double f, int precision = 3) {
+        std::stringstream ss;
+        ss.precision(precision);
+        ss << std::fixed << f;
+        auto s = ss.str();
+        *this = fraction(s);
+    }
 };
 
 template <typename IntType>
@@ -271,7 +279,7 @@ fraction<IntType> fraction<IntType>::get_decimal_from_str(const std::string & st
     bool negative = false;
 
     std::size_t pos1 = str.find_first_of(nums);       //寻找第一个数字出现的位置
-    if (pos1 == std::string::npos) return fraction<IntType>{0};          //没有找到任何可能的数字，返回0
+    if (pos1 == std::string::npos) return { IntType{0} };          //没有找到任何可能的数字，返回0
     if (pos1 > 0) negative = (str[pos1-1] == '-'); //识别数字前边是否存在负号
     
     //寻找之后第一个不是数字的位置/潜在的小数点
@@ -315,7 +323,7 @@ fraction<IntType> fraction<IntType>::get_decimal_from_str(const std::string & st
         }
     }
     else stra = str.substr(pos1); //未找到，说明都是数字
-    fraction t = 0;
+    fraction t{ IntType{ 0 } };
     //字符串转int整型
     IntType a = 0, b = 0;
     try { a = std::stoi(stra); } catch (...) { a = 0; } //a部分的转换
